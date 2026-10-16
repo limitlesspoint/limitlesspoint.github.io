@@ -1,0 +1,29 @@
+title: Limitless Point
+description: Notes, ideas, and essays.
+url: https://limitlesspoint.github.io
+baseurl: ""
+lang: en
+timezone: Europe/London
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+permalink: /:title/
+show_excerpts: true
+future: true
+header_pages: []
+minima:
+  date_format: "%d %B %Y"
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: false
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor

@@ -1,0 +1,47 @@
+media:
+  input: media
+  output: /media
+  categories: [image]
+  rename: safe
+
+content:
+  - name: posts
+    label: Posts
+    type: collection
+    path: _posts
+    format: yaml-frontmatter
+    subfolders: false
+    filename:
+      template: "{year}-{month}-{day}-{primary}.md"
+      field: false
+    view:
+      fields: [title, date]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: body
+        label: Your writing
+        type: rich-text
+        required: true
+        description: "Save when ready to publish. Saved text and uploaded pictures are public."
+        options:
+          format: markdown
+          switcher: false
+
+settings:
+  hide: true
+  content:
+    merge: true
