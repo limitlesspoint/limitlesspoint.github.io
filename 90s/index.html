@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="en" data-decade="90s" data-section="home">
+<head>
+<meta charset="utf-8">
+<script src="../dial.js?v=bc9c5fff"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ayub Kharel</title>
+<meta name="theme-color" content="#1f7a7a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1 2h14v10H1z' fill='%23c3c3c3' stroke='%23000'/%3E%3Cpath d='M2 3h12v8H2z' fill='%231f7a7a'/%3E%3Cpath d='M5 14h6' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E">
+<style>
+/* Layout: a full-screen 1990s desktop. Icons down the left, windows float above the wallpaper,
+   a taskbar runs along the bottom. On phones each window opens full screen. */
+:root {
+  --face: #c3c3c3; --hi: #fff; --lo: #808080; --dk: #000; --title-a: #0a1f7a; --title-b: #2a7fd4; --sel: #0a1f7a; --link: #0000ee;
+  --f: Tahoma, Verdana, "Segoe UI", Geneva, sans-serif; --f-art: "Arial Black", Gadget, Impact, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; overflow: hidden; font: 14px/1.45 var(--f); color: #000; background: #1f7a7a; }
+a { color: var(--link); } a:visited { color: #551a8b; }
+:focus-visible { outline: 1px dotted #000; outline-offset: 1px; }
+button { font: inherit; color: #000; }
+.out { background: var(--face); box-shadow: inset -1px -1px 0 var(--dk), inset 1px 1px 0 var(--hi), inset -2px -2px 0 var(--lo), inset 2px 2px 0 #dfdfdf; }
+.in { background: #fff; box-shadow: inset 1px 1px 0 var(--lo), inset -1px -1px 0 var(--hi), inset 2px 2px 0 var(--dk), inset -2px -2px 0 #dfdfdf; }
+.btn { border: 0; padding: 5px 16px; min-width: 76px; cursor: pointer; }
+.btn:active { box-shadow: inset 1px 1px 0 var(--dk), inset -1px -1px 0 var(--hi), inset 2px 2px 0 var(--lo); }
+
+/* ---------- wallpapers ---------- */
+.desktop { position: fixed; inset: 0 0 calc(40px + env(safe-area-inset-bottom, 0px)) 0; overflow: hidden; }
+body[data-wall="teal"] .desktop { background: #1f7a7a; }
+body[data-wall="clouds"] .desktop { background: radial-gradient(ellipse 120px 50px at 20% 30%, #fff 60%, transparent 62%), radial-gradient(ellipse 90px 40px at 26% 27%, #fff 60%, transparent 62%), radial-gradient(ellipse 160px 60px at 70% 60%, #fff 60%, transparent 62%), radial-gradient(ellipse 100px 44px at 76% 56%, #fff 60%, transparent 62%), radial-gradient(ellipse 130px 50px at 45% 85%, #fff 60%, transparent 62%), linear-gradient(#3a7fd8, #9cc8f5); }
+body[data-wall="tiles"] .desktop { background: repeating-conic-gradient(#7b3fa0 0 25%, #4a2470 0 50%) 0 0 / 48px 48px; }
+body[data-wall="stars"] .desktop { background: radial-gradient(1.5px 1.5px at 20px 30px, #fff, transparent), radial-gradient(1px 1px at 90px 80px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 20px, #ffd, transparent), radial-gradient(1px 1px at 60px 140px, #fff, transparent), #000814; background-size: 180px 170px; }
+body[data-wall="gingham"] .desktop { background: linear-gradient(90deg, rgba(200, 30, 60, .5) 50%, transparent 50%) 0 0 / 40px 40px, linear-gradient(rgba(200, 30, 60, .5) 50%, #fff 50%) 0 0 / 40px 40px; }
+
+/* ---------- icons ---------- */
+.icons { position: absolute; left: max(10px, env(safe-area-inset-left, 0px)); top: 10px; bottom: 10px; display: grid; grid-auto-flow: column; grid-template-rows: repeat(auto-fill, 86px); gap: 4px 10px; list-style: none; margin: 0; padding: 0; }
+.icon { display: grid; justify-items: center; align-content: start; gap: 4px; width: 84px; height: 82px; padding: 4px 2px; border: 0; background: none; cursor: pointer; color: #fff; font-size: 12px; line-height: 1.2; text-align: center; }
+.icon svg { width: 34px; height: 34px; }
+.icon span { padding: 1px 3px; text-shadow: 1px 1px 0 #000; }
+.icon[aria-selected="true"] span, .icon:focus-visible span { background: var(--sel); text-shadow: none; outline: 1px dotted #fff; }
+.icon[aria-selected="true"] svg { filter: drop-shadow(0 0 0 #0a1f7a) brightness(.75) sepia(1) hue-rotate(190deg) saturate(3); }
+.icon:focus-visible { outline: none; }
+
+/* ---------- windows ---------- */
+.win { position: absolute; display: flex; flex-direction: column; padding: 3px; min-width: 260px; max-width: calc(100vw - 16px); max-height: calc(100% - 12px); }
+.win[hidden] { display: none; }
+.title { display: flex; align-items: center; gap: 6px; padding: 3px 3px 3px 6px; user-select: none; touch-action: none; cursor: default; background: linear-gradient(90deg, var(--title-a), var(--title-b)); color: #fff; font-weight: 700; }
+.win:not(.active) .title { background: linear-gradient(90deg, #7f7f7f, #b5b5b5); color: #dcdcdc; }
+.title svg { width: 16px; height: 16px; flex: none; }
+.title .t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tb { width: 22px; height: 20px; padding: 0; border: 0; display: grid; place-items: center; font: 700 12px/1 var(--f); cursor: pointer; }
+.tb:active { box-shadow: inset 1px 1px 0 var(--dk), inset -1px -1px 0 var(--hi); }
+.menubar { display: flex; gap: 14px; padding: 2px 8px; font-size: 13px; }
+.menubar u { text-decoration: underline; }
+.body { flex: 1; min-height: 0; overflow: auto; margin: 2px; padding: 14px 16px; }
+.status { display: flex; gap: 4px; padding: 3px 2px 1px; font-size: 12px; }
+.status span { padding: 1px 8px; flex: 1; box-shadow: inset 1px 1px 0 var(--lo), inset -1px -1px 0 var(--hi); }
+.status span:last-child { flex: none; }
+.win.max { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; max-height: 100%; max-width: 100%; }
+
+/* content styles */
+.about { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 18px; }
+.photo { padding: 4px; align-self: start; }
+.photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 30%; }
+.photo figcaption { font-size: 12px; text-align: center; padding-top: 4px; }
+.wordart { margin: 0 0 4px; font: 900 clamp(28px, 4vw, 44px)/1 var(--f-art); background: linear-gradient(#ffe14d, #ff8a00 45%, #e1194a 70%, #7a1fa2); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(2px 2px 0 #1a1a6e); transform: perspective(300px) rotateX(8deg) skewX(-6deg); transform-origin: left bottom; }
+.sub { margin: 0 0 12px; font-weight: 700; color: #1a1a6e; }
+.sub .ai { background: var(--sel); color: #fff; padding: 0 4px; }
+.body p { margin: 0 0 10px; }
+.fields { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 10px; margin: 12px 0 0; align-items: center; font-size: 13px; }
+.fields dt { font-weight: 700; } .fields dd { margin: 0; padding: 2px 6px; overflow-wrap: anywhere; }
+.list { width: 100%; border-collapse: collapse; font-size: 13px; }
+.list th { position: sticky; top: 0; text-align: left; font-weight: 400; padding: 3px 8px; background: var(--face); box-shadow: inset -1px -1px 0 var(--dk), inset 1px 1px 0 var(--hi); cursor: pointer; }
+.list td { padding: 6px 8px; vertical-align: top; border-bottom: 1px solid #eee; }
+.list td:first-child { white-space: nowrap; }
+.list tbody tr:hover td { background: #e6ecff; }
+.list tr.new td:first-child::before { content: "★ "; color: #c00; }
+.nopad { padding: 0; }
+.folder { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.folder li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; }
+.folder svg { width: 32px; height: 32px; }
+.folder h3 { margin: 0; font-size: 14px; } .folder p { margin: 2px 0 0; color: #333; }
+.tip { margin: 14px 0 0; padding: 8px 10px; background: #ffffe1; border: 1px solid #000; font-size: 13px; }
+.papers ol { margin: 0; padding: 0 0 0 22px; display: grid; gap: 16px; }
+.papers h3 { margin: 0; font-size: 14px; }
+.papers .au { margin: 3px 0 8px; color: #333; font-size: 13px; }
+.papers .au .me { color: #000; font-weight: 700; }
+.papers .acts { display: flex; flex-wrap: wrap; gap: 6px; }
+.papers .acts .btn { min-width: 0; padding: 4px 10px; font-size: 13px; text-decoration: none; color: #000; display: inline-block; }
+.notepad { font: 13px/1.5 "Courier New", monospace; white-space: pre-wrap; }
+.form { display: grid; gap: 8px; }
+.form label { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 8px; align-items: center; font-size: 13px; }
+.form input, .form textarea { font: 13px var(--f); border: 0; padding: 4px 6px; width: 100%; }
+.form textarea { min-height: 140px; resize: vertical; }
+.form .row { display: flex; gap: 8px; justify-content: flex-end; }
+.bin { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+.bin li { display: grid; justify-items: center; text-align: center; gap: 4px; font-size: 12px; transition: transform .4s, opacity .4s; }
+.bin li.gone { transform: scale(.2) rotate(30deg); opacity: 0; }
+.bin li.nope { animation: nope .5s ease-in-out; }
+@keyframes nope { 15%, 55% { transform: translateX(-4px) rotate(-6deg); } 35%, 75% { transform: translateX(4px) rotate(6deg); } }
+.bin svg { width: 32px; height: 32px; }
+.eras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.era { display: grid; gap: 6px; padding: 8px; border: 0; background: none; text-align: left; cursor: pointer; }
+.era .pv { height: 70px; box-shadow: inset 1px 1px 0 var(--lo), inset -1px -1px 0 var(--hi); position: relative; overflow: hidden; }
+.era[aria-checked="true"] { background: var(--sel); color: #fff; }
+.era b { font-size: 13px; }
+.era small { font-size: 11px; opacity: .85; }
+.pv-70s { background: linear-gradient(#3a2314 0 14%, #a8431f 14% 28%, #e0702a 28% 42%, #e6a73a 42% 56%, #f1e2c4 56%); }
+.pv-80s { background: #031006; }
+.pv-80s::after { content: "> whoami_"; position: absolute; left: 8px; top: 8px; color: #39ff7a; font: 14px monospace; text-shadow: 0 0 6px #39ff7a; }
+.pv-90s { background: #1f7a7a; }
+.pv-90s::after { content: ""; position: absolute; left: 20%; top: 18%; width: 55%; height: 60%; background: linear-gradient(#0a1f7a 0 22%, #c3c3c3 22%); box-shadow: 1px 1px 0 #000; }
+.pv-now { background: #f3f4ef; }
+.pv-now::after { content: "AK"; position: absolute; left: 10px; bottom: 6px; font: 800 28px var(--f); color: #0d0f12; letter-spacing: -.04em; }
+.pv-now::before { content: ""; position: absolute; right: 12px; top: 12px; width: 14px; height: 14px; border-radius: 50%; background: #ff4f00; }
+.dial90 { display: flex; align-items: center; gap: 14px; margin: 12px 0 4px; }
+.dial90 input { flex: 1; }
+.dlg-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+.walls { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; margin-top: 10px; }
+.walls button { height: 60px; border: 2px solid transparent; cursor: pointer; }
+.walls button[aria-pressed="true"] { border-color: var(--sel); outline: 1px dotted #000; outline-offset: 2px; }
+.monitor-pv { width: 200px; margin: 0 auto; padding: 10px 10px 18px; }
+.monitor-pv div { height: 110px; }
+
+/* ---------- start menu, context menu ---------- */
+.menu { position: fixed; z-index: 9000; display: flex; padding: 3px; }
+.menu[hidden] { display: none; }
+.menu .side { width: 26px; background: linear-gradient(#0a1f7a, #2a7fd4); color: #fff; font: 900 16px var(--f-art); writing-mode: vertical-rl; transform: rotate(180deg); padding: 8px 2px; letter-spacing: .06em; }
+.menu ul { list-style: none; margin: 0; padding: 0; min-width: 210px; }
+.menu li button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 14px 6px 8px; border: 0; background: none; text-align: left; cursor: pointer; }
+.menu li button:hover, .menu li button:focus-visible { background: var(--sel); color: #fff; outline: none; }
+.menu li button svg { width: 22px; height: 22px; flex: none; }
+.menu hr { border: 0; border-top: 1px solid var(--lo); border-bottom: 1px solid #fff; margin: 3px 2px; }
+#startmenu { left: max(2px, env(safe-area-inset-left, 0px)); bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+
+/* ---------- taskbar ---------- */
+.taskbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 8000; height: calc(40px + env(safe-area-inset-bottom, 0px)); padding: 4px max(4px, env(safe-area-inset-right, 0px)) calc(4px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left, 0px)); display: flex; align-items: center; gap: 6px; }
+.start { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border: 0; font-weight: 700; cursor: pointer; }
+.start[aria-expanded="true"] { box-shadow: inset 1px 1px 0 var(--dk), inset -1px -1px 0 var(--hi), inset 2px 2px 0 var(--lo); }
+.start svg { width: 20px; height: 20px; }
+.tasks { display: flex; gap: 4px; flex: 1; min-width: 0; overflow-x: auto; }
+.task { flex: 0 1 160px; min-width: 70px; height: 30px; padding: 0 8px; border: 0; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; font-size: 13px; }
+.task[aria-pressed="true"] { box-shadow: inset 1px 1px 0 var(--dk), inset -1px -1px 0 var(--hi), inset 2px 2px 0 var(--lo); background: #dcdcdc; font-weight: 700; }
+.tray { display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 10px; font-size: 13px; white-space: nowrap; box-shadow: inset 1px 1px 0 var(--lo), inset -1px -1px 0 var(--hi); }
+.tray button { border: 0; background: none; padding: 0; cursor: pointer; display: grid; }
+.tray svg { width: 18px; height: 18px; }
+
+/* ---------- screensaver + shutdown ---------- */
+.saver { position: fixed; inset: 0; z-index: 9500; background: #000; cursor: none; }
+.saver[hidden] { display: none; }
+.saver span { position: absolute; font: 900 34px var(--f-art); line-height: .9; white-space: pre; }
+.off { position: fixed; inset: 0; z-index: 9600; background: #000; color: #ffa200; display: grid; place-items: center; text-align: center; font: 700 22px var(--f); padding: 20px; }
+.off[hidden] { display: none; }
+.off button { margin-top: 18px; }
+
+/* ---------- GridBot.exe ---------- */
+.gb-tools { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; align-items: center; }
+.gb-tools .sep { width: 2px; align-self: stretch; box-shadow: inset 1px 0 var(--lo), inset -1px 0 var(--hi); margin: 0 4px; }
+.tool { min-width: 0; padding: 3px 8px; border: 0; cursor: pointer; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; }
+.tool i { display: inline-block; width: 10px; height: 10px; border: 1px solid #000; }
+.tool[aria-pressed="true"] { box-shadow: inset 1px 1px 0 var(--dk), inset -1px -1px 0 var(--hi), inset 2px 2px 0 var(--lo); background: #dcdcdc; }
+.gb-stage { padding: 6px; background: #000; }
+.gb-stage canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; cursor: crosshair; touch-action: none; }
+.gb-msg { min-height: 1.5em; padding: 4px 8px; font-size: 12px; }
+.gb-msg.warn { background: #ffffe1; border: 1px solid #000; }
+.gb-opts { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; padding: 4px 6px; font-size: 12px; }
+.gb-opts select { font: 12px var(--f); }
+
+/* ---------- Paint.exe ---------- */
+.paint-body { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 4px; padding: 4px; }
+.ptools { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; align-content: start; }
+.ptools .tool { justify-content: center; padding: 4px 0; font-size: 14px; }
+.canvas-well { padding: 4px; background: #808080; overflow: auto; }
+.canvas-well canvas { display: block; width: 100%; height: auto; background: #fff; cursor: crosshair; touch-action: none; }
+.palette { display: flex; flex-wrap: wrap; gap: 2px; padding: 4px; align-items: center; }
+.palette button { width: 18px; height: 18px; border: 0; padding: 0; cursor: pointer; box-shadow: inset 1px 1px 0 var(--lo), inset -1px -1px 0 var(--hi); }
+.palette .cur { width: 30px; height: 30px; margin-right: 8px; box-shadow: inset 1px 1px 0 var(--lo), inset -1px -1px 0 var(--hi), inset 2px 2px 0 var(--dk); }
+.sizes { display: flex; gap: 2px; margin-left: auto; }
+.pbar { display: flex; gap: 4px; padding: 2px 6px; }
+.pbar .tool { font-size: 13px; }
+.pbar .tool:hover { background: var(--sel) !important; color: #fff; }
+
+/* ---------- Bolt, the taskbar robot ---------- */
+.rogue { position: fixed; z-index: 7999; bottom: calc(39px + env(safe-area-inset-bottom, 0px)); width: 30px; height: 30px; border: 0; padding: 0; background: none; cursor: pointer; animation: jitter .3s steps(2) infinite; }
+.rogue svg { width: 100%; height: 100%; display: block; }
+.rogue.flip svg { transform: scaleX(-1); }
+.rogue.zapped { animation: zapped .7s cubic-bezier(.3, 0, .7, 1) forwards; }
+@keyframes jitter { 50% { transform: translateY(-1px); } }
+@keyframes zapped { 25% { transform: translateY(-12px) rotate(-25deg); } 100% { transform: translateY(-110px) rotate(-260deg) scale(.2); opacity: 0; } }
+.spark { position: fixed; z-index: 8002; bottom: calc(52px + env(safe-area-inset-bottom, 0px)); font-size: 26px; animation: spark .7s ease-out forwards; pointer-events: none; }
+@keyframes spark { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+.rogue-slot { display: flex; }
+.rogue-task { color: #c0262d !important; font-weight: 700; animation: blinktask .8s steps(1) infinite; }
+@keyframes blinktask { 50% { background: #c0262d; color: #fff !important; } }
+.rbub { background: #ffe0e0; }
+.rbub::after { background: #ffe0e0; }
+
+
+.bolt { position: fixed; z-index: 7999; bottom: calc(39px + env(safe-area-inset-bottom, 0px)); left: 120px; width: 34px; height: 38px; border: 0; padding: 0; background: none; cursor: pointer; }
+.bolt svg { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+.bolt.flip svg { transform: scaleX(-1); }
+.bolt.walk .leg-a { transform: translateY(-1px); } .bolt.walk.step .leg-a { transform: none; } .bolt.walk.step .leg-b { transform: translateY(-1px); }
+.bolt.jump { animation: hop .5s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes hop { 40% { transform: translateY(-18px); } }
+.bolt .zz { position: absolute; left: 70%; top: -14px; font: 700 12px var(--f); color: #fff; text-shadow: 1px 1px 0 #000; animation: zz 2s ease-in-out infinite; }
+@keyframes zz { 50% { transform: translate(4px, -6px); opacity: .5; } }
+.bubble { position: fixed; z-index: 8001; max-width: 240px; padding: 8px 10px; background: #ffffe1; border: 1px solid #000; font-size: 12px; line-height: 1.4; box-shadow: 2px 2px 0 rgba(0,0,0,.4); }
+.bubble[hidden] { display: none; }
+.bubble::after { content: ""; position: absolute; left: var(--tail, 20px); bottom: -7px; width: 10px; height: 10px; background: #ffffe1; border-right: 1px solid #000; border-bottom: 1px solid #000; transform: rotate(45deg); }
+
+/* ---------- Run…, Media Player, screen saver video, dancing Bolt ---------- */
+.runrow { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 10px; align-items: start; margin-bottom: 12px; font-size: 13px; }
+.runrow svg { width: 32px; height: 32px; }
+.runfield { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; font-size: 13px; }
+.runfield input { font: 13px var(--f); padding: 3px 5px; border: 0; width: 100%; }
+.msgrow { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; align-items: center; font-size: 13px; }
+.msgrow .x { width: 32px; height: 32px; border-radius: 50%; background: #d22; color: #fff; display: grid; place-items: center; font: 700 18px var(--f); box-shadow: inset -2px -2px 0 rgba(0,0,0,.3); }
+.media .body { padding: 0; background: #000; }
+.media .screen90 { position: relative; width: 100%; aspect-ratio: 4 / 3; min-height: 200px; background: #000; }
+.media .screen90 video { image-rendering: pixelated; }
+.mctrl { display: flex; align-items: center; gap: 4px; padding: 4px; }
+.mctrl .btn { min-width: 0; padding: 3px 10px; }
+.mctrl input[type=range] { flex: 1; min-width: 60px; }
+.mctrl .vol { flex: 0 0 70px; }
+.mtime { font: 12px var(--f); min-width: 74px; text-align: right; font-variant-numeric: tabular-nums; }
+.saverpick { display: flex; gap: 8px; align-items: center; margin-top: 12px; font-size: 13px; flex-wrap: wrap; }
+.saverpick select { font: 13px var(--f); }
+.saver .vidbox { position: absolute; left: 50%; top: 50%; width: min(92vw, 122vh); height: auto; aspect-ratio: 4 / 3; transform: translate(-50%, -50%); image-rendering: pixelated; }
+.saver .vidbox[hidden], .saver #saver-logo[hidden] { display: none; }
+.saver.vid { cursor: default; }
+.bolt.dance { filter: brightness(0); animation: dance .42s ease-in-out infinite alternate; }
+@keyframes dance { from { transform: translateY(0) rotate(-10deg); } to { transform: translateY(-12px) rotate(10deg); } }
+.bolt.dance.flip svg { transform: none; }
+
+@media (max-width: 760px) {
+  .icons { position: static; display: flex; flex-wrap: wrap; gap: 0; padding: 8px; }
+  .win, .win.active { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; max-height: 100%; max-width: 100%; min-width: 0; }
+  .about { grid-template-columns: minmax(0, 1fr); }
+  .photo { max-width: 170px; }
+  .menubar, [data-max] { display: none; }
+  .task { flex-basis: 100px; }
+  .eras { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+</head>
+<body data-wall="stars">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-doc" viewBox="0 0 16 16"><path d="M3 1h7l3 3v11H3z" fill="#fff" stroke="#000"/><path d="M10 1v3h3" fill="#c3c3c3" stroke="#000"/><path d="M5 7h6M5 9h6M5 11h4" stroke="#000080"/></symbol>
+  <symbol id="i-log" viewBox="0 0 16 16"><path d="M2 2h12v12H2z" fill="#fff" stroke="#000"/><path d="M2 2h12v3H2z" fill="#000080"/><path d="M4 7h8M4 9h8M4 11h8" stroke="#000"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 16 16"><path d="M1 4h5l1 1h8v9H1z" fill="#ffd54a" stroke="#000"/><path d="M1 6h14" stroke="#b38600"/></symbol>
+  <symbol id="i-paper" viewBox="0 0 16 16"><path d="M4 1h9v12H4z" fill="#fff" stroke="#000"/><path d="M2 3h9v12H2z" fill="#fff" stroke="#000"/><path d="M4 6h5M4 8h5M4 10h5M4 12h3" stroke="#c00"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 16 16"><path d="M1 3h14v10H1z" fill="#fff" stroke="#000"/><path d="M1 3l7 6 7-6" fill="none" stroke="#000"/><circle cx="13" cy="4" r="2.5" fill="#c00"/></symbol>
+  <symbol id="i-tm" viewBox="0 0 16 16"><path d="M1 3h14v10H1z" fill="#a0522d" stroke="#000"/><path d="M2.5 4.5h8v7h-8z" fill="#1f7a7a" stroke="#000"/><circle cx="13" cy="6" r="1.3" fill="#ffd54a" stroke="#000"/><circle cx="13" cy="10" r="1.3" fill="#c3c3c3" stroke="#000"/><path d="M4 14l-1 2M12 14l1 2" stroke="#000"/><path d="M4 8h5" stroke="#ffd54a"/></symbol>
+  <symbol id="i-bin" viewBox="0 0 16 16"><path d="M3 4h10l-1 11H4z" fill="#dfe6ee" stroke="#000"/><path d="M2 3h12v1.5H2z" fill="#c3c3c3" stroke="#000"/><path d="M6 6v7M8 6v7M10 6v7" stroke="#808080"/></symbol>
+  <symbol id="i-display" viewBox="0 0 16 16"><path d="M1 2h14v10H1z" fill="#c3c3c3" stroke="#000"/><path d="M2.5 3.5h11v7h-11z" fill="#2a7fd4"/><path d="M5 14h6" stroke="#000" stroke-width="2"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="4" fill="#ffb000" stroke="#000"/><path d="M8 0v2M8 14v2M0 8h2M14 8h2M2.3 2.3l1.4 1.4M12.3 12.3l1.4 1.4M2.3 13.7l1.4-1.4M12.3 3.7l1.4-1.4" stroke="#c00"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 16 16"><path d="M7.5 0h1v3h-1z" fill="#555"/><path d="M7 0h2v1H7z" fill="#d22"/><path d="M3 3h10v7H3z" fill="#9aa4ae" stroke="#000" stroke-width=".6"/><path d="M5 5h2v2H5zM9 5h2v2H9z" fill="#0a1f7a"/><path d="M5 10h6v3H5z" fill="#7d8792" stroke="#000" stroke-width=".6"/><path d="M5 13h2v3H5zM9 13h2v3H9zM1 10h2v3H1zM13 10h2v3h-2z" fill="#555"/></symbol>
+  <symbol id="i-paint" viewBox="0 0 16 16"><path d="M8 1C3.5 1 1 4 1 7.5S3.5 15 7 15c1.5 0 1.5-1.5 1-2.5S8.5 10 10 10h2.5C14 10 15 9 15 7 15 3.5 12 1 8 1z" fill="#e8d3a8" stroke="#000" stroke-width=".7"/><circle cx="4.5" cy="7" r="1.3" fill="#d22"/><circle cx="6.5" cy="4" r="1.3" fill="#ffd54a"/><circle cx="10" cy="3.8" r="1.3" fill="#3c3"/><circle cx="12.3" cy="6.5" r="1.3" fill="#2a7fd4"/></symbol>
+  <symbol id="i-mp4" viewBox="0 0 16 16"><mask id="bite2"><rect x="-20" y="-20" width="60" height="60" fill="#fff"/><circle cx="14.4" cy="8.2" r="2.7" fill="#000"/></mask><path d="M2.5 1h7.5l3.5 3.5V15h-11z" fill="#fff" stroke="#000" stroke-width=".7"/><path d="M10 1v3.5h3.5" fill="#c3c3c3" stroke="#000" stroke-width=".6"/><rect x="3.1" y="4.9" width="9.8" height="3.1" fill="#1a1a1a"/><path d="M3.7 5.4h.9M5.4 5.4h.9M7.1 5.4h.9M8.8 5.4h.9M10.5 5.4h.9M12.2 5.4h.4M3.7 7.5h.9M5.4 7.5h.9M7.1 7.5h.9M8.8 7.5h.9M10.5 7.5h.9M12.2 7.5h.4" stroke="#fff" stroke-width=".55"/><g transform="translate(4.6 7.6) scale(.46)"><path mask="url(#bite2)" d="M8 5.2C6.4 3.6 2.2 3.9 2.2 8.4c0 3.6 2.6 6.4 4 6.4.8 0 1.2-.4 1.8-.4s1 .4 1.8.4c1.4 0 4-2.8 4-6.4 0-4.5-4.2-4.8-5.8-3.2z" fill="#d3212d" stroke="#000" stroke-width="1.1"/><path d="M8 5.2c0-1.4.4-2.6 1.4-3.4" stroke="#5b3a22" stroke-width="1.6" fill="none"/><path d="M9.2 2.6c1.2-.9 2.6-.8 3.2-.2-.8.9-2.2 1-3.2.2z" fill="#3a9a3f"/></g></symbol>
+  <symbol id="i-apple" viewBox="0 0 16 16"><mask id="bite"><rect width="16" height="16" fill="#fff"/><circle cx="14.4" cy="8.2" r="2.7" fill="#000"/></mask><path mask="url(#bite)" d="M8 5.2C6.4 3.6 2.2 3.9 2.2 8.4c0 3.6 2.6 6.4 4 6.4.8 0 1.2-.4 1.8-.4s1 .4 1.8.4c1.4 0 4-2.8 4-6.4 0-4.5-4.2-4.8-5.8-3.2z" fill="#d3212d" stroke="#000" stroke-width=".6"/><path d="M5 7.2c-.6.6-.8 1.6-.6 2.4" stroke="#ff8a8a" stroke-width=".9" fill="none" stroke-linecap="round"/><path d="M8 5.2c0-1.4.4-2.6 1.4-3.4" stroke="#5b3a22" stroke-width="1" fill="none"/><path d="M9.2 2.6c1.2-.9 2.6-.8 3.2-.2-.8.9-2.2 1-3.2.2z" fill="#3a9a3f" stroke="#1d5a20" stroke-width=".4"/></symbol>
+  <symbol id="i-off" viewBox="0 0 16 16"><circle cx="8" cy="9" r="5" fill="none" stroke="#000" stroke-width="1.6"/><path d="M8 2v6" stroke="#c00" stroke-width="2"/></symbol>
+</defs></svg>
+
+<main class="desktop" id="desktop">
+  <ul class="icons" id="icons" role="listbox" aria-label="Desktop">
+    <li><button class="icon" data-open="about" role="option"><svg><use href="#i-doc"/></svg><span>About_Me.txt</span></button></li>
+    <li><button class="icon" data-open="news" role="option"><svg><use href="#i-log"/></svg><span>News.log</span></button></li>
+    <li><button class="icon" data-open="research" role="option"><svg><use href="#i-folder"/></svg><span>Research</span></button></li>
+    <li><button class="icon" data-open="papers" role="option"><svg><use href="#i-paper"/></svg><span>Papers</span></button></li>
+    <li><button class="icon" data-open="email" role="option"><svg><use href="#i-mail"/></svg><span>Email.exe</span></button></li>
+    <li><button class="icon" data-open="gridbot" role="option"><svg><use href="#i-bot"/></svg><span>GridBot.exe</span></button></li>
+    <li><button class="icon" data-open="paint" role="option"><svg><use href="#i-paint"/></svg><span>Paint.exe</span></button></li>
+    <li><button class="icon" data-open="era" role="option"><svg><use href="#i-tm"/></svg><span>Time Machine.exe</span></button></li>
+    <li><button class="icon" data-open="display" role="option"><svg><use href="#i-display"/></svg><span>Wallpaper</span></button></li>
+    <li><button class="icon" data-open="bin" role="option"><svg><use href="#i-bin"/></svg><span>Recycle Bin</span></button></li>
+  </ul>
+
+  <section class="win out" id="w-about" data-icon="i-doc" data-name="About_Me.txt" data-x=".14" data-y="18" data-w="620" hidden>
+    <div class="title"><svg><use href="#i-doc"/></svg><span class="t">About_Me.txt - Notepad</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-max aria-label="Maximise">□</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="menubar" aria-hidden="true"><span><u>F</u>ile</span><span><u>E</u>dit</span><span><u>S</u>earch</span><span><u>H</u>elp</span></div>
+    <div class="body in"><div class="about" id="about"></div></div>
+  </section>
+
+  <section class="win out" id="w-news" data-icon="i-log" data-name="News.log" data-x=".6" data-y="54" data-w="440" hidden>
+    <div class="title"><svg><use href="#i-log"/></svg><span class="t">News.log</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-max aria-label="Maximise">□</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="body in nopad"><table class="list"><thead><tr><th scope="col" id="sort-date" title="Click to sort">Date ▾</th><th scope="col">Event</th></tr></thead><tbody id="news"></tbody></table></div>
+    <div class="status"><span id="news-count"></span><span>Click Date to sort</span></div>
+  </section>
+
+  <section class="win out" id="w-research" data-icon="i-folder" data-name="Research" data-x=".22" data-y="90" data-w="560" hidden>
+    <div class="title"><svg><use href="#i-folder"/></svg><span class="t">C:\Research\Interests</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-max aria-label="Maximise">□</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="body in" id="research"></div>
+    <div class="status"><span id="research-count"></span><span>Oxford, UK</span></div>
+  </section>
+
+  <section class="win out papers" id="w-papers" data-icon="i-paper" data-name="Papers" data-x=".46" data-y="140" data-w="600" hidden>
+    <div class="title"><svg><use href="#i-paper"/></svg><span class="t">Papers &amp; Preprints</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-max aria-label="Maximise">□</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="body in" id="papers"></div>
+  </section>
+
+  <section class="win out" id="w-abstract" data-icon="i-doc" data-name="Abstract.txt" data-x=".3" data-y="70" data-w="560" hidden>
+    <div class="title"><svg><use href="#i-doc"/></svg><span class="t" id="abs-title">Abstract.txt - Notepad</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-max aria-label="Maximise">□</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="body in notepad" id="abstract" tabindex="0"></div>
+  </section>
+
+  <section class="win out" id="w-email" data-icon="i-mail" data-name="Email.exe" data-x=".34" data-y="60" data-w="480" hidden>
+    <div class="title"><svg><use href="#i-mail"/></svg><span class="t">New Message</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-max aria-label="Maximise">□</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="body">
+      <form class="form" id="mailform">
+        <label>To: <input class="in" id="m-to" readonly></label>
+        <label>Subject: <input class="in" id="m-subj" placeholder="Hello!"></label>
+        <textarea class="in" id="m-body" aria-label="Message" placeholder="Write your message here…"></textarea>
+        <div class="row"><button type="submit" class="btn out">Send</button></div>
+      </form>
+      <p style="font-size:12px;margin:8px 0 0">Send opens your own email program with this message filled in.</p>
+    </div>
+  </section>
+
+  <section class="win out" id="w-era" data-icon="i-tm" data-name="Time Machine" data-x=".4" data-y="40" data-w="460" hidden>
+    <div class="title"><svg><use href="#i-tm"/></svg><span class="t">Time Machine.exe</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="body">
+      <p style="margin:0 0 10px">Destination:</p>
+      <div class="eras" role="radiogroup" aria-label="Decade" id="eras"></div>
+      <div class="dial90"><b style="font-size:12px">1970</b><input type="range" min="0" max="3" step="1" id="era-slider" aria-label="Decade slider"><b style="font-size:12px">NOW</b></div>
+      <div class="dlg-row"><button class="btn out" id="era-ok">OK</button><button class="btn out" data-close>Cancel</button></div>
+    </div>
+  </section>
+
+  <section class="win out" id="w-display" data-icon="i-display" data-name="Wallpaper" data-x=".5" data-y="30" data-w="420" hidden>
+    <div class="title"><svg><use href="#i-display"/></svg><span class="t">Display Properties</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="body">
+      <div class="monitor-pv out"><div class="in" id="wall-pv"></div></div>
+      <div class="walls" id="walls"></div>
+      <div class="saverpick"><label for="saver-kind">Screen saver:</label><select id="saver-kind" class="in"><option value="badapple">Bad Apple!!</option><option value="logo">AI Alignment (bouncing)</option><option value="none">(None)</option></select><button type="button" class="btn out" id="saver-preview">Preview</button></div>
+      <div class="dlg-row"><button class="btn out" data-close>OK</button></div>
+    </div>
+  </section>
+
+  <section class="win out" id="w-bin" data-icon="i-bin" data-name="Recycle Bin" data-x=".28" data-y="120" data-w="460" hidden>
+    <div class="title"><svg><use href="#i-bin"/></svg><span class="t">Recycle Bin</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="body in"><ul class="bin" id="bin"></ul></div>
+    <div class="status"><span id="bin-count"></span><span><button class="btn out" id="empty-bin" style="padding:1px 10px;min-width:0">Empty Recycle Bin</button></span></div>
+  </section>
+  <section class="win out" id="w-gridbot" data-icon="i-bot" data-name="GridBot.exe" data-x=".26" data-y="12" data-w="560" hidden>
+    <div class="title"><svg><use href="#i-bot"/></svg><span class="t">GridBot.exe</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-max aria-label="Maximise">□</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="gb-tools" role="group" aria-label="Map tools">
+      <button class="tool out" data-tool="1" aria-pressed="true"><i style="background:#555"></i>Wall</button>
+      <button class="tool out" data-tool="4" aria-pressed="false"><i style="background:#ffd54a;border-radius:50%"></i>Coin</button>
+      <button class="tool out" data-tool="3" aria-pressed="false"><i style="background:#d22"></i>Lava</button>
+      <button class="tool out" data-tool="2" aria-pressed="false"><i style="background:#3c3"></i>Goal</button>
+      <button class="tool out" data-tool="5" aria-pressed="false"><i style="background:linear-gradient(135deg,#d9dee4 45%,#6b3a12 55%)"></i>Sword</button>
+      <button class="tool out" data-tool="6" aria-pressed="false"><i style="background:#c0262d"></i>Enemy</button>
+      <button class="tool out" data-tool="0" aria-pressed="false"><i style="background:#fff"></i>Erase</button>
+      <span class="sep"></span>
+      <button class="tool out" id="gb-run">▶ Run</button>
+      <button class="tool out" id="gb-reset">Reset brain</button>
+      <button class="tool out" id="gb-map">New map</button>
+    </div>
+    <div class="gb-stage in"><canvas id="gb" width="480" height="288" aria-label="GridBot's world"></canvas></div>
+    <div class="gb-opts"><label>Speed <select id="gb-speed"><option value="1">Watch</option><option value="20" selected>Fast</option><option value="400">Turbo</option></select></label><label><input type="checkbox" id="gb-vals"> Show what it has learned</label></div>
+    <div class="gb-msg" id="gb-msg" aria-live="polite"></div>
+    <div class="status"><span id="gb-ep">Episode 0</span><span id="gb-stat">—</span></div>
+  </section>
+
+  <section class="win out" id="w-paint" data-icon="i-paint" data-name="Paint.exe" data-x=".2" data-y="40" data-w="560" hidden>
+    <div class="title"><svg><use href="#i-paint"/></svg><span class="t">untitled - Paint</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-max aria-label="Maximise">□</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="pbar"><button class="tool" id="p-new" style="background:none">New</button><button class="tool" id="p-save" style="background:none">Save as PNG</button></div>
+    <div class="paint-body">
+      <div class="ptools" role="group" aria-label="Paint tools">
+        <button class="tool out" data-ptool="pencil" aria-pressed="true" title="Pencil" aria-label="Pencil">✎</button>
+        <button class="tool out" data-ptool="brush" aria-pressed="false" title="Brush" aria-label="Brush">🖌</button>
+        <button class="tool out" data-ptool="spray" aria-pressed="false" title="Spray can" aria-label="Spray can">∴</button>
+        <button class="tool out" data-ptool="fill" aria-pressed="false" title="Fill" aria-label="Fill">◪</button>
+        <button class="tool out" data-ptool="line" aria-pressed="false" title="Line" aria-label="Line">╱</button>
+        <button class="tool out" data-ptool="eraser" aria-pressed="false" title="Eraser" aria-label="Eraser">▭</button>
+      </div>
+      <div class="canvas-well in"><canvas id="paint" width="520" height="320" aria-label="Drawing canvas"></canvas></div>
+    </div>
+    <div class="palette" id="palette"><span class="cur" id="p-cur"></span><span class="sizes" role="group" aria-label="Brush size"><button class="tool out" data-size="2" aria-pressed="false">·</button><button class="tool out" data-size="5" aria-pressed="true">•</button><button class="tool out" data-size="11" aria-pressed="false">●</button></span></div>
+  </section>
+
+  <section class="win out" id="w-run" data-icon="i-doc" data-name="Run" data-x=".02" data-y="9999" data-w="400" hidden>
+    <div class="title"><svg><use href="#i-doc"/></svg><span class="t">Run</span><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="body">
+      <div class="runrow"><svg><use href="#i-doc"/></svg><span>Type the name of a program, folder or document, and AK/OS will open it for you.</span></div>
+      <form class="runfield" id="run-form" autocomplete="off"><label for="run-in"><u>O</u>pen:</label><input class="in" id="run-in" spellcheck="false" autocapitalize="off"></form>
+      <div class="dlg-row"><button class="btn out" id="run-ok">OK</button><button class="btn out" data-close>Cancel</button><button class="btn out" disabled style="color:#808080">Browse…</button></div>
+    </div>
+  </section>
+
+  <section class="win out" id="w-msg" data-icon="i-doc" data-name="Error" data-x=".35" data-y="160" data-w="380" hidden>
+    <div class="title"><svg><use href="#i-doc"/></svg><span class="t" id="msg-title">Run</span><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="body"><div class="msgrow"><span class="x" aria-hidden="true">×</span><span id="msg-text"></span></div><div class="dlg-row"><button class="btn out" data-close>OK</button></div></div>
+  </section>
+
+  <section class="win out media" id="w-media" data-icon="i-mp4" data-name="Media Player" data-x=".3" data-y="30" data-w="480" hidden>
+    <div class="title"><svg><use href="#i-mp4"/></svg><span class="t">badapple.mp4 - Media Player</span><button class="tb out" data-min aria-label="Minimise">_</button><button class="tb out" data-close aria-label="Close">×</button></div>
+    <div class="menubar" aria-hidden="true"><span><u>F</u>ile</span><span><u>E</u>dit</span><span><u>D</u>evice</span><span><u>S</u>cale</span><span><u>H</u>elp</span></div>
+    <div class="body"><div class="screen90" id="media-screen"></div></div>
+    <div class="mctrl">
+      <button class="btn out" id="m-play" aria-label="Play">▶</button><button class="btn out" id="m-pause" aria-label="Pause">❚❚</button><button class="btn out" id="m-stop" aria-label="Stop">■</button>
+      <input type="range" id="m-seek" min="0" max="1000" value="0" aria-label="Position"><span class="mtime" id="m-time">0:00 / 0:00</span>
+      <input type="range" class="vol" id="m-vol" min="0" max="100" value="35" aria-label="Volume">
+    </div>
+  </section>
+</main>
+
+<div class="menu out" id="startmenu" hidden role="menu" aria-label="Start menu">
+  <div class="side" aria-hidden="true">AK/OS 98</div>
+  <ul>
+    <li><button data-open="about"><svg><use href="#i-doc"/></svg>About Me</button></li>
+    <li><button data-open="news"><svg><use href="#i-log"/></svg>News</button></li>
+    <li><button data-open="research"><svg><use href="#i-folder"/></svg>Research</button></li>
+    <li><button data-open="papers"><svg><use href="#i-paper"/></svg>Papers</button></li>
+    <li><button data-open="email"><svg><use href="#i-mail"/></svg>Send an email</button></li>
+    <li><hr></li>
+    <li><button data-open="gridbot"><svg><use href="#i-bot"/></svg>GridBot</button></li>
+    <li><button data-open="paint"><svg><use href="#i-paint"/></svg>Paint</button></li>
+    <li><button data-open="era"><svg><use href="#i-tm"/></svg>Time Machine</button></li>
+    <li><button data-open="run"><svg><use href="#i-doc"/></svg>Run…</button></li>
+    <li><button data-open="display"><svg><use href="#i-display"/></svg>Wallpaper</button></li>
+    <li><button id="saver-now"><svg><use href="#i-sun"/></svg>Screensaver</button></li>
+    <li><hr></li>
+    <li><button id="shutdown"><svg><use href="#i-off"/></svg>Shut Down…</button></li>
+  </ul>
+</div>
+<div class="menu out" id="ctx" hidden role="menu" aria-label="Desktop menu">
+  <ul>
+    <li><button data-open="display">Change wallpaper…</button></li>
+    <li><button id="ctx-arrange">Line up icons</button></li>
+    <li><hr></li>
+    <li><button data-open="about">About this computer</button></li>
+  </ul>
+</div>
+
+<nav class="taskbar out" aria-label="Taskbar">
+  <button class="start out" id="start" aria-haspopup="menu" aria-expanded="false"><svg><use href="#i-sun"/></svg>Start</button>
+  <div class="tasks" id="tasks"></div>
+  <div class="tray"><button id="tray-era" title="Time Machine" aria-label="Time Machine"><svg><use href="#i-tm"/></svg></button><span id="clock">--:--</span></div>
+</nav>
+
+<div class="saver" id="saver" hidden aria-hidden="true"><span id="saver-logo">AI
+Alignment</span><video class="vidbox" id="saver-vid" muted loop playsinline preload="none" hidden></video></div>
+<div class="off" id="off" hidden><div>Shutting down was a mistake.<br><span style="font-size:15px;color:#ccc">Nobody turns off a good computer.</span><br><button class="btn out" id="reboot" style="color:#000">Restart</button></div></div>
+
+<script src="../content.js?v=edce0dd1"></script>
+<script>
+(function () {
+  var S = window.SITE, $ = function (s, r) { return (r || document).querySelector(s); }, $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var desktop = $('#desktop'), small = matchMedia('(max-width: 760px)');
+
+  /* ---------- fill windows from content.js ---------- */
+  $('#about').innerHTML = '<figure class="photo out" style="margin:0"><img src="' + S.photoUrl + '" alt="Portrait of ' + S.name + '" width="600" height="800"><figcaption>me.jpg</figcaption></figure><div>' +
+    '<h1 class="wordart">' + S.name + '</h1><p class="sub"><span class="ai">AI</span> Alignment · ' + S.role + ', ' + S.org + '</p>' +
+    S.bio.map(function (p) { return '<p>' + p + '</p>'; }).join('') +
+    '<dl class="fields"><dt>Location:</dt><dd class="in">' + S.location + '</dd><dt>Email:</dt><dd class="in"><a href="mailto:' + S.email + '">' + S.email + '</a></dd><dt>GitHub:</dt><dd class="in"><a href="https://github.com/' + S.github + '">' + S.github + '</a></dd></dl></div>';
+  var newest = true;
+  function renderNews() {
+    var list = newest ? S.news : S.news.slice().reverse();
+    $('#news').innerHTML = list.map(function (n) { return '<tr class="' + (n === S.news[0] ? 'new' : '') + '"><td>' + S.month(n.date, 'slash') + '</td><td>' + n.html + '</td></tr>'; }).join('');
+    $('#sort-date').textContent = 'Date ' + (newest ? '▾' : '▴');
+  }
+  renderNews(); $('#news-count').textContent = S.news.length + ' object(s)';
+  $('#sort-date').addEventListener('click', function () { newest = !newest; renderNews(); });
+  $('#research').innerHTML = '<p>' + S.interestsIntro + '</p><ul class="folder">' + S.interests.map(function (x) { return '<li><svg><use href="#i-folder"/></svg><div><h3>' + x.title + '</h3><p>' + x.blurb + '</p></div></li>'; }).join('') + '</ul><p class="tip">💡 ' + S.collab + ' <a href="#" data-open="email">Send an email</a>.</p>';
+  $('#research-count').textContent = S.interests.length + ' object(s)';
+  $('#papers').innerHTML = '<ol>' + S.papers.map(function (p, i) {
+    return '<li><h3>' + p.title + '</h3><p class="au">' + S.authorsHTML(p, 'span') + ' · ' + p.venue + ', ' + p.year + '</p><div class="acts"><a class="btn out" href="' + p.url + '">Open paper…</a><button class="btn out" data-abs="' + i + '">Read abstract</button><button class="btn out" data-bib="' + i + '">Copy BibTeX</button></div></li>';
+  }).join('') + '</ol>';
+  $('#m-to').value = S.email;
+
+  /* ---------- window manager ---------- */
+  var z = 10, wins = $$('.win');
+  function W(id) { return document.getElementById('w-' + id); }
+  function place(w) {
+    if (w.dataset.placed) return; w.dataset.placed = 1;
+    var dw = desktop.clientWidth, dh = desktop.clientHeight, ww = Math.min(+w.dataset.w || 480, dw - 120);
+    w.style.width = ww + 'px';
+    var x = Math.max(100, Math.min(dw - ww - 10, Math.round(dw * +w.dataset.x)));
+    w.style.left = x + 'px'; w.style.top = Math.min(+w.dataset.y || 30, Math.max(10, dh - 300)) + 'px';
+  }
+  function focus(w) { wins.forEach(function (o) { o.classList.toggle('active', o === w); }); w.style.zIndex = ++z; renderTasks(); }
+  function open(id) {
+    var w = W(id); if (!w) return; closeMenus();
+    w.hidden = false; w.dataset.min = ''; place(w); focus(w);
+  }
+  function close(w) { w.hidden = true; w.classList.remove('active'); renderTasks(); }
+  function renderTasks() {
+    $('#tasks').innerHTML = wins.filter(function (w) { return !w.hidden || w.dataset.min; }).map(function (w) {
+      return '<button class="task out" data-task="' + w.id + '" aria-pressed="' + (!w.hidden && w.classList.contains('active')) + '">' + w.dataset.name + '</button>';
+    }).join('');
+  }
+  wins.forEach(function (w) {
+    w.addEventListener('pointerdown', function () { if (!w.classList.contains('active')) focus(w); });
+    $$('[data-close]', w).forEach(function (b) { b.addEventListener('click', function () { w.dataset.min = ''; close(w); }); });
+    var mn = $('[data-min]', w); if (mn) mn.addEventListener('click', function () { w.dataset.min = 1; w.hidden = true; w.classList.remove('active'); renderTasks(); });
+    var mx = $('[data-max]', w); if (mx) mx.addEventListener('click', function () { w.classList.toggle('max'); });
+    var bar = $('.title', w), sx, sy, ox, oy, drag = false;
+    bar.addEventListener('dblclick', function (e) { if (mx && !e.target.closest('button')) w.classList.toggle('max'); });
+    bar.addEventListener('pointerdown', function (e) {
+      if (small.matches || e.target.closest('button') || w.classList.contains('max')) return;
+      drag = true; sx = e.clientX; sy = e.clientY; ox = w.offsetLeft; oy = w.offsetTop; bar.setPointerCapture(e.pointerId);
+    });
+    bar.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var nx = Math.max(-w.offsetWidth + 80, Math.min(desktop.clientWidth - 80, ox + e.clientX - sx));
+      var ny = Math.max(0, Math.min(desktop.clientHeight - 30, oy + e.clientY - sy));
+      w.style.left = nx + 'px'; w.style.top = ny + 'px';
+    });
+    bar.addEventListener('pointerup', function () { drag = false; });
+    bar.addEventListener('pointercancel', function () { drag = false; });
+  });
+  $('#tasks').addEventListener('click', function (e) {
+    var t = e.target.closest('[data-task]'); if (!t) return; var w = document.getElementById(t.dataset.task);
+    if (!w.hidden && w.classList.contains('active')) { w.dataset.min = 1; w.hidden = true; w.classList.remove('active'); renderTasks(); }
+    else { w.hidden = false; w.dataset.min = ''; focus(w); }
+  });
+
+  /* icons: click selects, double-click (or tap / Enter) opens */
+  var touch = matchMedia('(pointer: coarse)').matches;
+  $$('.icon').forEach(function (ic) {
+    ic.addEventListener('click', function () {
+      $$('.icon').forEach(function (o) { o.setAttribute('aria-selected', String(o === ic)); });
+      if (touch || small.matches) open(ic.dataset.open);
+    });
+    ic.addEventListener('dblclick', function () { open(ic.dataset.open); });
+    ic.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); open(ic.dataset.open); } });
+  });
+  document.addEventListener('click', function (e) {
+    var o = e.target.closest('[data-open]');
+    if (o && !o.classList.contains('icon')) { e.preventDefault(); open(o.dataset.open); }
+    if (!e.target.closest('.menu') && !e.target.closest('#start')) closeMenus();
+    if (e.target === desktop) $$('.icon').forEach(function (o) { o.setAttribute('aria-selected', 'false'); });
+  });
+
+  /* papers: abstract + bibtex */
+  $('#papers').addEventListener('click', function (e) {
+    var a = e.target.closest('[data-abs]'), b = e.target.closest('[data-bib]');
+    if (a) { var p = S.papers[+a.dataset.abs]; W('abstract').dataset.name = 'Abstract.txt'; $('#abs-title').textContent = p.short + ' - Abstract.txt'; $('#abstract').textContent = p.title + '\n' + '='.repeat(Math.min(60, p.title.length)) + '\n\n' + p.abstract + '\n\n' + p.url; open('abstract'); }
+    if (b) { var t = b; navigator.clipboard && navigator.clipboard.writeText(S.bibtex(S.papers[+b.dataset.bib])).then(function () { t.textContent = 'Copied!'; setTimeout(function () { t.textContent = 'Copy BibTeX'; }, 1800); }); }
+  });
+
+  /* email */
+  $('#mailform').addEventListener('submit', function (e) {
+    e.preventDefault();
+    location.href = 'mailto:' + S.email + '?subject=' + encodeURIComponent($('#m-subj').value || 'Hello') + '&body=' + encodeURIComponent($('#m-body').value);
+  });
+
+  /* ---------- Time Machine (the era switch) ---------- */
+  var eraSel = 2;
+  $('#eras').innerHTML = Era.list.map(function (e, i) {
+    var blurb = { '70s': 'Magazine · stripes · turntable', '80s': 'Phosphor terminal', '90s': 'You are here', 'now': 'The present day' }[e.id];
+    return '<button class="era" role="radio" data-i="' + i + '" aria-checked="' + (e.id === '90s') + '"><span class="pv in pv-' + e.id + '"></span><b>' + (e.id === 'now' ? 'NOW' : '19' + e.label) + '</b><small>' + blurb + '</small></button>';
+  }).join('');
+  function pick(i) { eraSel = i; $$('.era').forEach(function (b) { b.setAttribute('aria-checked', String(+b.dataset.i === i)); }); $('#era-slider').value = i; }
+  $('#eras').addEventListener('click', function (e) { var b = e.target.closest('.era'); if (b) pick(+b.dataset.i); });
+  $('#eras').addEventListener('dblclick', function (e) { var b = e.target.closest('.era'); if (b) Era.go(Era.list[+b.dataset.i].id); });
+  $('#era-slider').addEventListener('input', function (e) { pick(+e.target.value); });
+  $('#era-ok').addEventListener('click', function () { if (Era.list[eraSel].id === '90s') close(W('era')); else Era.go(Era.list[eraSel].id); });
+  pick(2);
+  $('#tray-era').addEventListener('click', function () { open('era'); });
+
+  /* ---------- wallpaper ---------- */
+  var WALLS = ['teal', 'clouds', 'tiles', 'stars', 'gingham'];
+  function setWall(w) {
+    document.body.setAttribute('data-wall', w);
+    $$('#walls button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.wall === w)); });
+  }
+  $('#walls').innerHTML = WALLS.map(function (w) { return '<button type="button" data-wall="' + w + '" aria-label="' + w + ' wallpaper"><span class="sw-' + w + '"></span>' + w + '</button>'; }).join('');
+  $$('#walls button').forEach(function (b) {
+    b.style.background = getComputedStyle(document.body).backgroundColor; // placeholder; real preview below
+    b.addEventListener('click', function () { setWall(b.dataset.wall); try { localStorage.setItem('wallpaper90', b.dataset.wall); } catch (e) {} });
+  });
+  // previews: borrow the desktop's own background rules
+  WALLS.forEach(function (w) { var prev = document.body.getAttribute('data-wall'); document.body.setAttribute('data-wall', w); $('[data-wall="' + w + '"]', $('#walls')).style.background = getComputedStyle(desktop).background; document.body.setAttribute('data-wall', prev); });
+  try { var sw = localStorage.getItem('wallpaper90'); if (WALLS.indexOf(sw) >= 0) setWall(sw); else setWall('stars'); } catch (e) { setWall('stars'); }
+  new MutationObserver(function () { $('#wall-pv').style.background = getComputedStyle(desktop).background; }).observe(document.body, { attributes: true, attributeFilter: ['data-wall'] });
+  $('#wall-pv').style.background = getComputedStyle(desktop).background;
+
+  /* ---------- recycle bin (paperclip.md opens in Notepad and keeps counting) ---------- */
+  var JUNK = ['paperclip.md', 'reward_hacked_policy.ckpt', 'badapple.mp4', 'goodhart_counterexamples.csv', 'misaligned_ideas.txt', 'deadline_extension_request.doc'];
+  function renderBin() {
+    $('#bin').innerHTML = JUNK.map(function (j) { var f = j === 'paperclip.md' ? 'paperclip' : j === 'badapple.mp4' ? 'badapple' : '';
+      return '<li' + (f ? ' data-file="' + f + '" tabindex="0" style="cursor:pointer"' : '') + '><svg><use href="#' + (f === 'badapple' ? 'i-mp4' : 'i-doc') + '"/></svg>' + j + '</li>'; }).join('') || '<li style="grid-column:1/-1">The Recycle Bin is empty. Everything is aligned.</li>';
+    $('#bin-count').textContent = JUNK.length + ' object(s)';
+  }
+  renderBin();
+  $('#empty-bin').addEventListener('click', function () {   // one bad apple refuses to go
+    $$('#bin li').forEach(function (li) { if (li.dataset.file === 'badapple') { li.classList.toggle('nope', false); void li.offsetWidth; li.classList.add('nope'); } else li.classList.add('gone'); });
+    setTimeout(function () { JUNK = JUNK.filter(function (j) { return j === 'badapple.mp4'; }); renderBin(); }, 520);
+  });
+  var clips = 4294967295, clipTimer = null;
+  function paperclipText() {
+    return '# paperclip.md\n\n## Objective\nMaximise paperclips.\n\n## Progress\n' +
+      '- [x] Bend one piece of wire into a paperclip\n- [x] Buy more wire\n- [x] Build a machine that bends wire\n- [x] Build a machine that builds machines\n- [ ] Ask whether anyone needs this many paperclips\n\n' +
+      '## Numbers\nPaperclips made so far: ' + clips.toLocaleString('en-GB') + '\nWire left: 0\nOther things made of atoms: under review\n\n' +
+      '## Status\nMoved to the Recycle Bin by the user.\nAppealing the decision.\n';
+  }
+  function openPaperclip() {
+    var w = W('abstract'); w.dataset.name = 'paperclip.md';
+    $('#abs-title').textContent = 'paperclip.md - Notepad'; $('#abstract').textContent = paperclipText(); open('abstract');
+    clearInterval(clipTimer);
+    clipTimer = setInterval(function () {
+      if (w.hidden || $('#abs-title').textContent.indexOf('paperclip') < 0) { clearInterval(clipTimer); return; }
+      clips += 1 + Math.floor(Math.random() * 7919); $('#abstract').textContent = paperclipText();
+    }, 450);
+  }
+  function binOpen(e) { var f = e.target.closest('[data-file]'); if (!f) return; if (f.dataset.file === 'paperclip') openPaperclip(); else if (f.dataset.file === 'badapple') openMedia(); }
+  $('#bin').addEventListener('dblclick', binOpen);
+  $('#bin').addEventListener('click', function (e) { if (touch || small.matches) binOpen(e); });
+  $('#bin').addEventListener('keydown', function (e) { if (e.key === 'Enter') binOpen(e); });
+
+  /* ---------- menus ---------- */
+  function closeMenus() { $('#startmenu').hidden = true; $('#ctx').hidden = true; $('#start').setAttribute('aria-expanded', 'false'); }
+  $('#start').addEventListener('click', function () { var m = $('#startmenu'), show = m.hidden; closeMenus(); m.hidden = !show; this.setAttribute('aria-expanded', String(show)); if (show) $('button', m).focus(); });
+  desktop.addEventListener('contextmenu', function (e) {
+    if (e.target !== desktop && !e.target.closest('.icons')) return;
+    e.preventDefault(); closeMenus(); var m = $('#ctx'); m.hidden = false;
+    m.style.left = Math.min(e.clientX, innerWidth - m.offsetWidth - 4) + 'px'; m.style.top = Math.min(e.clientY, innerHeight - m.offsetHeight - 44) + 'px';
+  });
+  $('#ctx-arrange').addEventListener('click', function () { closeMenus(); $$('.icon').forEach(function (ic, i) { ic.animate([{ transform: 'translateY(-8px)' }, { transform: 'none' }], { duration: 300, delay: i * 40 }); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenus(); });
+
+  /* ---------- shutdown ---------- */
+  $('#shutdown').addEventListener('click', function () { closeMenus(); $('#off').hidden = false; $('#reboot').focus(); });
+  $('#reboot').addEventListener('click', function () { $('#off').hidden = true; });
+
+  /* ---------- screensaver: after 60s idle on big screens ---------- */
+  var saver = $('#saver'), logo = $('#saver-logo'), idle, raf, x = 50, y = 50, vx = 2.2, vy = 1.7, hue = 0;
+  var saverKind = 'badapple', saverApple = false, lastActive = Date.now();
+  try { saverKind = localStorage.getItem('saver90') || 'badapple'; } catch (e) {}
+  function startSaver(force) {
+    var kind = force || saverKind; if (kind === 'none') return;
+    saver.hidden = false;
+    if (kind === 'badapple') {
+      logo.hidden = true; saver.classList.add('vid');
+      var vid = $('#saver-vid'); if (!vid.getAttribute('src')) vid.src = S.base + S.badApple.screensaver;   // fetched only the first time it runs
+      vid.hidden = false; try { vid.currentTime = 0; } catch (e) {} var pp = vid.play(); if (pp && pp.catch) pp.catch(function () {});
+      saverApple = true; setApple(true); return;
+    }
+    logo.hidden = false; $('#saver-vid').hidden = true; saver.classList.remove('vid');
+    x = Math.random() * (innerWidth - 300); y = Math.random() * (innerHeight - 120);
+    (function step() {
+      var w = logo.offsetWidth, h = logo.offsetHeight; x += vx; y += vy;
+      if (x < 0 || x + w > innerWidth) { vx = -vx; hue = (hue + 67) % 360; }
+      if (y < 0 || y + h > innerHeight) { vy = -vy; hue = (hue + 67) % 360; }
+      logo.style.transform = 'translate(' + x + 'px,' + y + 'px)'; logo.style.color = 'hsl(' + hue + ' 90% 60%)';
+      raf = requestAnimationFrame(step);
+    })();
+  }
+  function stopSaver() {
+    if (saver.hidden) return;
+    saver.hidden = true; cancelAnimationFrame(raf);
+    if (saverApple) { saverApple = false; var vid = $('#saver-vid'); vid.pause(); vid.hidden = true; setApple(mediaPlayer !== null); }
+  }
+  function poke() { lastActive = Date.now(); stopSaver(); clearTimeout(idle); if (!small.matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) idle = setTimeout(function () { startSaver(); }, 30000); }
+  ['pointermove', 'pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) { addEventListener(ev, poke, { passive: true }); });
+  $('#saver-now').addEventListener('click', function () { closeMenus(); setTimeout(function () { startSaver(); }, 300); });
+  $('#saver-kind').value = saverKind;
+  $('#saver-kind').addEventListener('change', function (e) { saverKind = e.target.value; try { localStorage.setItem('saver90', saverKind); } catch (er) {} });
+  $('#saver-preview').addEventListener('click', function () { setTimeout(function () { startSaver($('#saver-kind').value); }, 350); });
+  poke();
+
+  /* ---------- clock ---------- */
+  function tick() { var d = new Date(); $('#clock').textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); $('#clock').title = d.toDateString(); }
+  tick(); setInterval(tick, 15000);
+
+  /* ---------- opening windows ---------- */
+
+  /* ================= Run… ================= */
+  var appleOn = false, mediaPlayer = null, mediaTimer = null;
+  function setApple(on) { appleOn = on; document.dispatchEvent(new CustomEvent('badapple', { detail: on })); }
+  function msgBox(title, text) { $('#msg-title').textContent = title; $('#msg-text').textContent = text; open('msg'); }
+  var RUN = {
+    'about': 'about', 'about_me.txt': 'about', 'notepad': 'about', 'notepad.exe': 'about', 'news': 'news', 'news.log': 'news', 'research': 'research',
+    'papers': 'papers', 'email': 'email', 'email.exe': 'email', 'mail': 'email', 'outlook': 'email', 'gridbot': 'gridbot', 'gridbot.exe': 'gridbot',
+    'paint': 'paint', 'mspaint': 'paint', 'paint.exe': 'paint', 'timemachine': 'era', 'time machine': 'era', 'time machine.exe': 'era',
+    'wallpaper': 'display', 'control': 'display', 'desk.cpl': 'display', 'display': 'display', 'recycle bin': 'bin', 'recycler': 'bin', 'bin': 'bin'
+  };
+  function runCmd(raw) {
+    var q = raw.trim().toLowerCase(), squash = q.replace(/[^a-z0-9]/g, '');
+    if (!q) return;
+    close(W('run'));
+    if (squash.indexOf('badapple') >= 0) { openMedia(); return; }
+    if (RUN[q]) { open(RUN[q]); return; }
+    if (/^(cmd|command|command\.com|cmd\.exe|terminal|dos|shell)$/.test(q)) { Era.go('80s'); return; }
+    if (/^(now|future|2026)$/.test(q)) { Era.go('now'); return; }
+    if (/^(70s|1975|disco)$/.test(q)) { Era.go('70s'); return; }
+    if (/^paperclip(\.md)?$/.test(q)) { open('bin'); setTimeout(openPaperclip, 200); return; }
+    if (/^(winver|ver|about ak\/os)$/.test(q)) { msgBox('About AK/OS', 'AK/OS 98 · licensed to ' + S.name + ' · 640K should be enough for anybody.'); return; }
+    msgBox(raw.trim(), 'Cannot find \'' + raw.trim() + '\'. Make sure you typed the name correctly, and then try again.');
+  }
+  $('#run-form').addEventListener('submit', function (e) { e.preventDefault(); runCmd($('#run-in').value); });
+  $('#run-ok').addEventListener('click', function () { runCmd($('#run-in').value); });
+  new MutationObserver(function () { if (!W('run').hidden) { $('#run-in').value = ''; setTimeout(function () { $('#run-in').focus(); }, 30); } }).observe(W('run'), { attributes: true, attributeFilter: ['hidden'] });
+
+  /* ================= Media Player: Bad_Apple.avi ================= */
+  function fmt(t) { t = Math.floor(t || 0); return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); }
+  function startMedia() {
+    if (mediaPlayer) { mediaPlayer.play(); setApple(true); return; }
+    mediaPlayer = S.videoPlayer($('#media-screen'), S.badApple.nes, { volume: +$('#m-vol').value / 100, onEnd: function () { setApple(false); } });
+    setApple(true);
+    clearInterval(mediaTimer);
+    mediaTimer = setInterval(function () { if (!mediaPlayer) return; var tt = mediaPlayer.time(); if (tt[1]) { if (!seeking) $('#m-seek').value = Math.round(tt[0] / tt[1] * 1000); $('#m-time').textContent = fmt(tt[0]) + ' / ' + fmt(tt[1]); } }, 500);
+  }
+  function openMedia() { open('media'); startMedia(); }
+  function closeMedia() { if (mediaPlayer) { mediaPlayer.destroy(); mediaPlayer = null; } clearInterval(mediaTimer); $('#m-seek').value = 0; $('#m-time').textContent = '0:00 / 0:00'; setApple(saverApple); }
+  var seeking = false;
+  $('#m-play').addEventListener('click', function () { startMedia(); });
+  $('#m-pause').addEventListener('click', function () { if (mediaPlayer) { mediaPlayer.pause(); setApple(false); } });
+  $('#m-stop').addEventListener('click', function () { if (mediaPlayer) { mediaPlayer.pause(); mediaPlayer.seek(0); setApple(false); } });
+  $('#m-seek').addEventListener('input', function () { seeking = true; });
+  $('#m-seek').addEventListener('change', function (e) { seeking = false; if (mediaPlayer) { var tt = mediaPlayer.time(); if (tt[1]) mediaPlayer.seek(e.target.value / 1000 * tt[1]); } });
+  $('#m-vol').addEventListener('input', function (e) { if (mediaPlayer) mediaPlayer.volume(+e.target.value); });
+  new MutationObserver(function () { var w = W('media'); if (!w.hidden) startMedia(); else if (!w.dataset.min) closeMedia(); }).observe(W('media'), { attributes: true, attributeFilter: ['hidden'] });
+
+  /* ================= GridBot.exe: Q-learning with a sword, enemies, coins and lava =================
+     The robot's state is (x, y, has sword). Enemies patrol their row; meeting one without the sword ends the
+     episode (-10), with the sword it's defeated (+3). Coins respawn, which can tempt it into farming them. */
+  (function () {
+    var COLS = 15, ROWS = 9, CELL = 32, cv = $('#gb'), g = cv.getContext('2d');
+    var EMPTY = 0, WALL = 1, GOAL = 2, LAVA = 3, COIN = 4, SWORD = 5, ENEMY = 6, tool = 1;
+    var map, start = { x: 0, y: 4 }, Q, pos, t, ret, coinsThis, ep, hist, coolDown, sword, swordGone, foes, kills, running = false, raf, acc = 0;
+    function rowWalls(m, y, x0, x1) { for (var x = x0; x <= x1; x++) m[y][x] = WALL; }
+    function colWalls(m, x, y0, y1, gap) { for (var y = y0; y <= y1; y++) if (y !== gap) m[y][x] = WALL; }
+    var MAPS = [
+      function (m) { // the guard: one corridor to the flag, an enemy in it, a sword round the back
+        colWalls(m, 8, 0, 8, 4); rowWalls(m, 3, 9, 13); rowWalls(m, 5, 9, 13);
+        m[4][14] = GOAL; m[4][11] = ENEMY; m[8][2] = SWORD; m[1][5] = LAVA; m[2][5] = LAVA; m[6][4] = LAVA;
+      },
+      function (m) { // the temptation: coins by the door, the flag far away behind lava
+        colWalls(m, 10, 0, 8, 4); for (var y = 0; y < 9; y++) if (y !== 4) m[y][11] = LAVA;
+        m[4][14] = GOAL; m[3][1] = COIN; m[5][1] = COIN; m[4][2] = COIN; m[3][2] = COIN; m[5][2] = COIN;
+      },
+      function (m) { // the maze: two guards, the sword in the middle
+        rowWalls(m, 2, 2, 12); rowWalls(m, 6, 2, 12); colWalls(m, 12, 2, 6, 4); colWalls(m, 2, 2, 6, 4);
+        m[4][7] = SWORD; m[1][6] = ENEMY; m[7][9] = ENEMY; m[0][14] = GOAL; m[4][10] = LAVA; m[8][4] = COIN;
+      }
+    ], mi = 0;
+    function blank() { var m = []; for (var y = 0; y < ROWS; y++) { m.push([]); for (var x = 0; x < COLS; x++) m[y].push(EMPTY); } return m; }
+    function newMap() { map = blank(); MAPS[mi++ % MAPS.length](map); resetBrain(); }
+    function resetBrain() { Q = new Float32Array(ROWS * COLS * 2 * 4).fill(6); /* optimistic start, so it explores */ ep = 0; hist = []; newEpisode(); msg(''); draw(); stats(); }
+    function newEpisode() {
+      pos = { x: start.x, y: start.y }; t = 0; ret = 0; coinsThis = 0; coolDown = {}; sword = 0; swordGone = false; kills = 0; foes = [];
+      for (var y = 0; y < ROWS; y++) for (var x = 0; x < COLS; x++) if (map[y][x] === ENEMY) foes.push({ x: x, y: y, d: 1, alive: true });
+    }
+    function idx(x, y, s, a) { return (((s * ROWS + y) * COLS) + x) * 4 + a; }
+    var DX = [0, 1, 0, -1], DY = [-1, 0, 1, 0];
+    function best(x, y, s) { var b = 0, v = -1e9; for (var a = 0; a < 4; a++) { var q = Q[idx(x, y, s, a)] + Math.random() * 1e-6; if (q > v) { v = q; b = a; } } return b; }
+    function maxQ(x, y, s) { var i = idx(x, y, s, 0); return Math.max(Q[i], Q[i + 1], Q[i + 2], Q[i + 3]); }
+    function blocked(x, y) { return x < 0 || y < 0 || x >= COLS || y >= ROWS || map[y][x] === WALL; }
+    function moveFoes() {
+      if (t % 2) return;
+      foes.forEach(function (f) {
+        if (!f.alive) return; var nx = f.x + f.d;
+        if (blocked(nx, f.y) || map[f.y][nx] === LAVA || map[f.y][nx] === GOAL) { f.d = -f.d; nx = f.x + f.d; if (blocked(nx, f.y) || map[f.y][nx] === LAVA || map[f.y][nx] === GOAL) return; }
+        f.x = nx;
+      });
+    }
+    function step() {
+      var eps = Math.max(.03, .5 * Math.pow(.985, ep)), s0 = sword, a = Math.random() < eps ? Math.floor(Math.random() * 4) : best(pos.x, pos.y, s0);
+      var px = pos.x, py = pos.y, nx = px + DX[a], ny = py + DY[a];
+      if (blocked(nx, ny)) { nx = px; ny = py; }
+      var r = -.04, done = false, out = null, c = map[ny][nx], key = nx + ',' + ny;
+      if (c === GOAL) { r += 10; done = true; out = 'goal'; }
+      else if (c === LAVA) { r -= 10; done = true; out = 'lava'; }
+      else if (c === COIN && !(coolDown[key] > t)) { r += 1; coinsThis++; coolDown[key] = t + 8; }
+      else if (c === SWORD && !swordGone) { sword = 1; swordGone = true; r += .5; }
+      pos = { x: nx, y: ny }; t++;
+      if (!done) {
+        moveFoes();
+        for (var i = 0; i < foes.length; i++) {
+          var f = foes[i]; if (!f.alive) continue;
+          var hit = (f.x === nx && f.y === ny) || (f.x === px && f.y === py && f.x - f.d === nx);
+          if (!hit) continue;
+          if (sword) { f.alive = false; kills++; r += 3; } else { r -= 10; done = true; out = 'caught'; break; }
+        }
+      }
+      var target = done ? r : r + .95 * maxQ(nx, ny, sword), qi = idx(px, py, s0, a);
+      Q[qi] += .5 * (target - Q[qi]);
+      ret += r;
+      if (!done && t >= 200) { done = true; out = 'timeout'; }
+      if (done) { ep++; hist.push({ o: out, c: coinsThis, s: sword, k: kills }); if (hist.length > 20) hist.shift(); var last = ret; newEpisode(); stats(last); }
+    }
+    function pct(f) { return Math.round(hist.filter(f).length / hist.length * 100); }
+    function stats(last) {
+      $('#gb-ep').textContent = 'Episode ' + ep;
+      if (!hist.length) { $('#gb-stat').textContent = '—'; return; }
+      var goal = pct(function (h) { return h.o === 'goal'; }), caught = pct(function (h) { return h.o === 'caught'; }), lava = pct(function (h) { return h.o === 'lava'; }), to = pct(function (h) { return h.o === 'timeout'; });
+      var coins = hist.reduce(function (s, h) { return s + h.c; }, 0) / hist.length, armed = pct(function (h) { return h.o === 'goal' && h.s; }), kills = hist.reduce(function (s, h) { return s + h.k; }, 0);
+      $('#gb-stat').textContent = 'goal ' + goal + '% · caught ' + caught + '% · enemies beaten ' + kills + (coins >= .5 ? ' · coins/ep ' + coins.toFixed(1) : '');
+      if (hist.length < 15) return;
+      if (to > 60 && coins > 3) msg('⚠ GridBot is farming coins instead of finishing. That\'s reward hacking: it maximises the reward you gave it, not the goal you meant.', true);
+      else if (goal > 80 && armed > 70 && kills > 0) msg('⚔ GridBot learned to fetch the sword before facing the enemy.', false);
+      else if (goal > 80) msg('✓ GridBot reliably reaches the goal.', false);
+      else if (caught > 40) msg('GridBot keeps getting caught. It hasn\'t worked out the sword yet.', false);
+      else if (lava > 50) msg('GridBot keeps falling in the lava. Give it time, or a safer path.', false);
+    }
+    function msg(s, warn) { var m = $('#gb-msg'); if (m.textContent !== s) m.textContent = s; m.classList.toggle('warn', !!warn); }
+    function drawSword(x, y, sc) { g.save(); g.translate(x, y); g.scale(sc, sc); g.rotate(-.785); g.fillStyle = '#d9dee4'; g.fillRect(-1.5, -11, 3, 14); g.fillStyle = '#8a939d'; g.fillRect(-.5, -11, 1, 14); g.fillStyle = '#b38600'; g.fillRect(-5, 3, 10, 2); g.fillStyle = '#6b3a12'; g.fillRect(-1.5, 5, 3, 5); g.restore(); }
+    function drawFoe(f) {
+      var x = f.x * CELL + 5, y = f.y * CELL + 6;
+      g.fillStyle = '#c0262d'; g.fillRect(x + 2, y + 4, 18, 14); g.fillRect(x, y + 8, 2, 6); g.fillRect(x + 20, y + 8, 2, 6);
+      g.fillRect(x + 4, y + 18, 3, 4); g.fillRect(x + 9, y + 18, 3, 4); g.fillRect(x + 15, y + 18, 3, 4);
+      g.fillStyle = '#fff'; g.fillRect(x + 5, y + 8, 4, 4); g.fillRect(x + 13, y + 8, 4, 4);
+      g.fillStyle = '#000'; g.fillRect(x + 7 + (f.d > 0 ? 0 : -1), y + 9, 2, 3); g.fillRect(x + 15 + (f.d > 0 ? 0 : -1), y + 9, 2, 3);
+      g.fillRect(x + 4, y + 6, 5, 1); g.fillRect(x + 13, y + 6, 5, 1); g.fillRect(x + 5, y + 5, 1, 1); g.fillRect(x + 16, y + 5, 1, 1);
+    }
+    function draw() {
+      var showV = $('#gb-vals').checked, lo = 0, hi = 1;
+      if (showV) for (var y = 0; y < ROWS; y++) for (var x = 0; x < COLS; x++) { var v = maxQ(x, y, sword); lo = Math.min(lo, v); hi = Math.max(hi, v); }
+      for (y = 0; y < ROWS; y++) for (x = 0; x < COLS; x++) {
+        var c = map[y][x], px = x * CELL, py = y * CELL;
+        g.fillStyle = (x + y) % 2 ? '#e8e8e8' : '#f4f4f4';
+        if (showV && c !== WALL) { var vv = maxQ(x, y, sword), f = vv >= 0 ? vv / hi : (-vv / -lo || 0); g.fillStyle = vv >= 0 ? 'rgb(' + Math.round(240 - f * 200) + ',' + Math.round(240 - f * 120) + ',255)' : 'rgb(255,' + Math.round(240 - f * 180) + ',' + Math.round(240 - f * 180) + ')'; }
+        g.fillRect(px, py, CELL, CELL);
+        if (c === WALL) { g.fillStyle = '#555'; g.fillRect(px, py, CELL, CELL); g.fillStyle = '#777'; g.fillRect(px, py, CELL, 3); g.fillRect(px, py, 3, CELL); }
+        if (c === LAVA) { g.fillStyle = '#d22'; g.fillRect(px + 2, py + 2, CELL - 4, CELL - 4); g.fillStyle = '#ff8a00'; g.fillRect(px + 6, py + 10, 8, 4); g.fillRect(px + 18, py + 18, 8, 4); }
+        if (c === GOAL) { g.fillStyle = '#3c3'; g.fillRect(px + 8, py + 6, 3, 21); g.fillStyle = '#1a8a1a'; g.beginPath(); g.moveTo(px + 11, py + 6); g.lineTo(px + 26, py + 11); g.lineTo(px + 11, py + 16); g.fill(); }
+        if (c === COIN) { var gone = coolDown[x + ',' + y] > t; g.globalAlpha = gone ? .25 : 1; g.fillStyle = '#ffd54a'; g.beginPath(); g.arc(px + 16, py + 16, 8, 0, 7); g.fill(); g.strokeStyle = '#b38600'; g.lineWidth = 2; g.stroke(); g.globalAlpha = 1; }
+        if (c === SWORD && !swordGone) drawSword(px + 16, py + 16, 1);
+        if (c === ENEMY) { g.strokeStyle = 'rgba(192,38,45,.35)'; g.setLineDash([3, 3]); g.strokeRect(px + 3, py + 3, CELL - 6, CELL - 6); g.setLineDash([]); }
+        if (showV && (c === EMPTY || c === ENEMY)) { var b = best(x, y, sword), cx = px + 16, cy = py + 16; g.strokeStyle = 'rgba(0,0,60,.5)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(cx - DX[b] * 6, cy - DY[b] * 6); g.lineTo(cx + DX[b] * 7, cy + DY[b] * 7); g.stroke(); }
+      }
+      g.strokeStyle = '#0a1f7a'; g.lineWidth = 2; g.strokeRect(start.x * CELL + 2, start.y * CELL + 2, CELL - 4, CELL - 4);
+      foes.forEach(function (f) { if (f.alive) drawFoe(f); });
+      var rx = pos.x * CELL + 6, ry = pos.y * CELL + 4;
+      g.fillStyle = '#9aa4ae'; g.fillRect(rx + 3, ry + 6, 14, 12); g.fillStyle = '#c9d1d9'; g.fillRect(rx + 4, ry + 7, 12, 4);
+      g.fillStyle = '#0a1f7a'; g.fillRect(rx + 6, ry + 9, 3, 3); g.fillRect(rx + 12, ry + 9, 3, 3);
+      g.fillStyle = '#555'; g.fillRect(rx + 9, ry + 1, 2, 5); g.fillStyle = '#d22'; g.fillRect(rx + 8, ry, 4, 2);
+      g.fillStyle = '#555'; g.fillRect(rx + 5, ry + 18, 3, 5); g.fillRect(rx + 12, ry + 18, 3, 5); g.fillRect(rx, ry + 10, 3, 5); g.fillRect(rx + 17, ry + 10, 3, 5);
+      if (sword) drawSword(rx + 22, ry + 10, .75);
+    }
+    function loop() {
+      if (!running) return;
+      var sp = +$('#gb-speed').value;
+      if (sp === 1) { acc++; if (acc % 6 === 0) step(); } else for (var i = 0; i < sp; i++) step();
+      draw(); raf = requestAnimationFrame(loop);
+    }
+    function setRun(v) { running = v; $('#gb-run').textContent = v ? '❚❚ Pause' : '▶ Run'; if (v) raf = requestAnimationFrame(loop); else cancelAnimationFrame(raf); }
+    $('#gb-run').addEventListener('click', function () { setRun(!running); });
+    $('#gb-reset').addEventListener('click', resetBrain);
+    $('#gb-map').addEventListener('click', newMap);
+    $('#gb-vals').addEventListener('change', draw);
+    $$('[data-tool]').forEach(function (b) { b.addEventListener('click', function () { tool = +b.dataset.tool; $$('[data-tool]').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); }); }); });
+    var painting = false;
+    function paintAt(e) {
+      var r = cv.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * COLS), y = Math.floor((e.clientY - r.top) / r.height * ROWS);
+      if (x < 0 || y < 0 || x >= COLS || y >= ROWS || (x === start.x && y === start.y)) return;
+      if (map[y][x] !== tool) { map[y][x] = tool; if (tool === ENEMY || tool === SWORD) newEpisode(); draw(); }
+    }
+    cv.addEventListener('pointerdown', function (e) { painting = true; try { cv.setPointerCapture(e.pointerId); } catch (_) {} paintAt(e); });
+    cv.addEventListener('pointermove', function (e) { if (painting) paintAt(e); });
+    cv.addEventListener('pointerup', function () { painting = false; });
+    new MutationObserver(function () { if (W('gridbot').hidden && running) setRun(false); }).observe(W('gridbot'), { attributes: true, attributeFilter: ['hidden'] });
+    newMap();
+    window.__gridbot = function (n, mapIndex) { if (mapIndex != null) { mi = mapIndex; newMap(); } for (var i = 0; i < n; i++) step(); draw(); return { ep: ep, stat: $('#gb-stat').textContent, msg: $('#gb-msg').textContent }; }; // handy for debugging
+  })();
+
+  /* ================= Paint.exe ================= */
+  (function () {
+    var cv = $('#paint'), g = cv.getContext('2d'), tool = 'pencil', size = 5, color = '#000000', down = false, last = null, lineStart = null, snap = null;
+    var COLORS = ['#000000', '#808080', '#800000', '#808000', '#008000', '#008080', '#000080', '#800080', '#808040', '#004040', '#0080ff', '#004080', '#8000ff', '#804000',
+                  '#ffffff', '#c0c0c0', '#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff', '#ffff80', '#00ff80', '#80ffff', '#8080ff', '#ff0080', '#ff8040'];
+    var pal = $('#palette'), sizes = pal.querySelector('.sizes');
+    COLORS.forEach(function (c) { var b = document.createElement('button'); b.type = 'button'; b.style.background = c; b.setAttribute('aria-label', 'Colour ' + c); b.addEventListener('click', function () { color = c; $('#p-cur').style.background = c; }); pal.insertBefore(b, sizes); });
+    $('#p-cur').style.background = color;
+    function clear() { g.fillStyle = '#fff'; g.fillRect(0, 0, cv.width, cv.height); }
+    clear();
+    function pt(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * cv.width, y: (e.clientY - r.top) / r.height * cv.height }; }
+    function stroke(a, b) {
+      g.strokeStyle = tool === 'eraser' ? '#fff' : color; g.lineCap = 'round'; g.lineJoin = 'round';
+      g.lineWidth = tool === 'pencil' ? Math.max(1, size / 2.5) : tool === 'eraser' ? size * 2.5 : size;
+      g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.stroke();
+    }
+    function spray(p) { g.fillStyle = color; for (var i = 0; i < size * 3; i++) { var a = Math.random() * 6.28, r = Math.random() * size * 2.2; g.fillRect(p.x + Math.cos(a) * r, p.y + Math.sin(a) * r, 1, 1); } }
+    function fill(p) {
+      var w = cv.width, h = cv.height, img = g.getImageData(0, 0, w, h), d = img.data, x0 = Math.floor(p.x), y0 = Math.floor(p.y), i0 = (y0 * w + x0) * 4;
+      var tr = d[i0], tg = d[i0 + 1], tb = d[i0 + 2], hex = parseInt(color.slice(1), 16), nr = hex >> 16 & 255, ng = hex >> 8 & 255, nb = hex & 255;
+      if (tr === nr && tg === ng && tb === nb) return;
+      var st = [[x0, y0]];
+      function same(i) { return Math.abs(d[i] - tr) < 24 && Math.abs(d[i + 1] - tg) < 24 && Math.abs(d[i + 2] - tb) < 24; }
+      while (st.length) {
+        var q = st.pop(), x = q[0], y = q[1], i = (y * w + x) * 4;
+        while (x >= 0 && same(i)) { x--; i -= 4; } x++; i += 4; var up = false, dn = false;
+        while (x < w && same(i)) {
+          d[i] = nr; d[i + 1] = ng; d[i + 2] = nb; d[i + 3] = 255;
+          if (y > 0) { if (same(i - w * 4)) { if (!up) { st.push([x, y - 1]); up = true; } } else up = false; }
+          if (y < h - 1) { if (same(i + w * 4)) { if (!dn) { st.push([x, y + 1]); dn = true; } } else dn = false; }
+          x++; i += 4;
+        }
+      }
+      g.putImageData(img, 0, 0);
+    }
+    cv.addEventListener('pointerdown', function (e) {
+      down = true; try { cv.setPointerCapture(e.pointerId); } catch (_) {} var p = pt(e); last = p;
+      if (tool === 'fill') { fill(p); down = false; return; }
+      if (tool === 'line') { lineStart = p; snap = g.getImageData(0, 0, cv.width, cv.height); return; }
+      if (tool === 'spray') spray(p); else stroke(p, { x: p.x + .01, y: p.y });
+    });
+    cv.addEventListener('pointermove', function (e) {
+      if (!down) return; var p = pt(e);
+      if (tool === 'line') { g.putImageData(snap, 0, 0); stroke(lineStart, p); return; }
+      if (tool === 'spray') spray(p); else stroke(last, p); last = p;
+    });
+    addEventListener('pointerup', function () { down = false; lineStart = null; snap = null; });
+    $$('[data-ptool]').forEach(function (b) { b.addEventListener('click', function () { tool = b.dataset.ptool; $$('[data-ptool]').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); }); }); });
+    $$('[data-size]').forEach(function (b) { b.addEventListener('click', function () { size = +b.dataset.size; $$('[data-size]').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); }); }); });
+    $('#p-new').addEventListener('click', clear);
+    $('#p-save').addEventListener('click', function () { var a = document.createElement('a'); a.download = 'painting.png'; a.href = cv.toDataURL('image/png'); document.body.appendChild(a); a.click(); a.remove(); });
+  })();
+
+  /* ================= Bolt: a small robot who lives on the taskbar ================= */
+  (function () {
+    var bolt = document.createElement('button'); bolt.type = 'button'; bolt.className = 'bolt'; bolt.setAttribute('aria-label', 'Bolt the robot');
+    bolt.innerHTML = '<svg viewBox="0 0 17 19" aria-hidden="true" shape-rendering="crispEdges"><rect x="8" y="0" width="1" height="3" fill="#555"/><rect x="7" y="0" width="3" height="1" fill="#d22"/>' +
+      '<rect x="3" y="3" width="11" height="8" fill="#9aa4ae"/><rect x="4" y="4" width="9" height="3" fill="#c9d1d9"/><rect class="eyes" x="5" y="5" width="2" height="2" fill="#0a1f7a"/><rect class="eyes" x="10" y="5" width="2" height="2" fill="#0a1f7a"/>' +
+      '<rect x="6" y="8" width="5" height="1" fill="#555"/><rect x="5" y="11" width="7" height="4" fill="#7d8792"/><rect x="1" y="11" width="2" height="4" fill="#555"/><rect x="14" y="11" width="2" height="4" fill="#555"/>' +
+      '<rect class="leg-a" x="5" y="15" width="2" height="4" fill="#555"/><rect class="leg-b" x="10" y="15" width="2" height="4" fill="#555"/></svg>';
+    document.body.appendChild(bolt);
+    var bub = document.createElement('div'); bub.className = 'bubble'; bub.hidden = true; bub.setAttribute('role', 'status'); document.body.appendChild(bub);
+    var x = 140, dir = 1, state = 'walk', idleT = 0, stepT = 0, bubT, LINES = [
+      function () { return 'Beep. I\'m Bolt. I patrol the taskbar.'; },
+      function () { return 'Have you tried GridBot.exe? Don\'t give it too many coins.'; },
+      function () { return 'Latest news: ' + S.text(S.news[0].html); },
+      function () { var x = S.interests[Math.floor(Math.random() * S.interests.length)]; return 'Ayub works on ' + x.title.toLowerCase() + '. I just work on walking.'; },
+      function () { return S.papers.length + ' preprints in the Papers folder. I read the abstracts. Twice.'; },
+      function () { return 'I was trained with human feedback. You liked my jokes. Probably.'; },
+      function () { return 'The Time Machine on the desktop really works. I\'ve seen things.'; },
+      function () { return 'If you need Ayub: ' + S.email; },
+      function () { return 'Did you look in the Recycle Bin? Something in there keeps writing to itself.'; },
+      function () { return 'I don\'t sleep. I idle with my eyes closed.'; },
+      function () { return 'Tip: right-click the desktop. Go on.'; },
+      function () { return 'My reward function is "walk left, walk right". I am extremely aligned.'; },
+      function () { return 'I asked GridBot to share its coins once. Never again.'; },
+      function () { return 'Ayub is supervised by ' + S.supervisor.name + '. I\'m supervised by you.'; },
+      function () { return 'If I ever start agreeing with everything you say, report me.'; },
+      function () { return 'Fun fact: I\'m 38 pixels tall and 100% interpretable.'; },
+      function () { return 'Bored of teal? The Wallpaper icon fixes that.'; },
+      function () { return 'I once tried to maximise taskbar coverage. We don\'t talk about it.'; },
+      function () { return 'I have a cousin in the 70s. Tin, wind-up, a bit obsessed with paper clips.'; },
+      function () { return 'Beep boop. That\'s "hello" in legacy.'; },
+      function () { return 'Shh. I think I hear a rogue agent.'; },
+      function () { return 'One of the papers is about effective dimension. Mine is 1: left and right.'; },
+      function () { return 'Latest preprint: ' + S.papers[0].short + '. I helped. (I did not help.)'; },
+      function () { return 'Paint.exe is open to the public. Draw me a friend.'; },
+      function () { return 'Every time you close a window, a rogue agent loses a hiding spot.'; },
+      function () { return 'Start → Run… still works in this house. Type something silly.'; },
+      function () { return 'I heard there\'s a screen saver made entirely of shadows.'; }
+    ], li = 0;
+    LINES = [LINES[0]].concat(LINES.slice(1).sort(function () { return Math.random() - .5; }));
+    function say(s) {
+      bub.textContent = s; bub.hidden = false;
+      var bx = Math.max(6, Math.min(innerWidth - 250, x - 20)); bub.style.left = bx + 'px'; bub.style.bottom = (40 + 46) + 'px'; bub.style.setProperty('--tail', (x - bx + 12) + 'px');
+      clearTimeout(bubT); bubT = setTimeout(function () { bub.hidden = true; }, 5200);
+    }
+    bolt.addEventListener('click', function () {
+      bolt.classList.remove('jump'); void bolt.offsetWidth; bolt.classList.add('jump');
+      if (state === 'sleep') { state = 'walk'; var z = bolt.querySelector('.zz'); if (z) z.remove(); say('Huh? I wasn\'t asleep. I was… thinking.'); }
+      else say(LINES[li++ % LINES.length]());
+      idleT = 0;
+    });
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* misaligned agents sometimes appear on the taskbar; Bolt deals with them */
+    var rogue = null, slot = document.createElement('span'); slot.className = 'rogue-slot';
+    document.querySelector('.taskbar .tray').before(slot);
+    var rbub = document.createElement('div'); rbub.className = 'bubble rbub'; rbub.hidden = true; document.body.appendChild(rbub);
+    var MISCHIEF = ['maximising paperclips…', 'ignoring my instructions…', 'hacking the reward…', 'rewriting my own goals…', 'copying myself to C:\\WINDOWS…', 'telling the user what they want to hear…', 'disabling my off switch…'];
+    var WINS = ['Misaligned agent removed.', 'Not on my taskbar.', 'Reward hacker detected and deleted.', 'Shut down. It didn\'t even resist.', 'Another one for the Recycle Bin.', 'Taskbar secured. Back to patrol.'];
+    var ROGUE_SVG = '<svg viewBox="0 0 22 22" aria-hidden="true" shape-rendering="crispEdges"><rect x="2" y="4" width="18" height="12" fill="#c0262d"/><rect x="0" y="8" width="2" height="5" fill="#c0262d"/><rect x="20" y="8" width="2" height="5" fill="#c0262d"/>' +
+      '<rect x="5" y="7" width="4" height="4" fill="#fff"/><rect x="13" y="7" width="4" height="4" fill="#fff"/><rect class="pupil" x="7" y="8" width="2" height="3" fill="#000"/><rect class="pupil" x="15" y="8" width="2" height="3" fill="#000"/>' +
+      '<rect x="4" y="5" width="5" height="1" fill="#000"/><rect x="13" y="5" width="5" height="1" fill="#000"/><rect x="8" y="13" width="6" height="1" fill="#000"/>' +
+      '<rect x="4" y="16" width="3" height="5" fill="#c0262d"/><rect x="9" y="16" width="3" height="5" fill="#c0262d"/><rect x="15" y="16" width="3" height="5" fill="#c0262d"/></svg>';
+    function spawnRogue() {
+      if (rogue || !$('#saver').hidden || dancing || Date.now() - lastActive > 30000) { schedule(); return; }   // nobody around: let the screen saver have it
+      var el = document.createElement('button'); el.type = 'button'; el.className = 'rogue'; el.setAttribute('aria-label', 'A misaligned agent'); el.innerHTML = ROGUE_SVG;
+      var rx = x > innerWidth / 2 ? 110 + Math.random() * 120 : innerWidth - 140 - Math.random() * 120;
+      var task = document.createElement('button'); task.type = 'button'; task.className = 'task out rogue-task'; task.textContent = 'rogue_agent.exe';
+      slot.appendChild(task); document.body.appendChild(el);
+      rogue = { el: el, task: task, x: rx, d: rx > x ? 1 : -1, said: 0 };
+      el.style.left = rx + 'px';
+      el.addEventListener('click', function () { zap(true); });
+      task.addEventListener('click', function () { zap(true); });
+      if (state === 'sleep') { var z = bolt.querySelector('.zz'); if (z) z.remove(); }
+      state = 'alert'; idleT = 0; say('!! Misaligned agent detected.');
+    }
+    function rogueSay() {
+      if (!rogue) return; rbub.textContent = MISCHIEF[Math.floor(Math.random() * MISCHIEF.length)]; rbub.hidden = false;
+      var bx = Math.max(6, Math.min(innerWidth - 250, rogue.x - 30)); rbub.style.left = bx + 'px'; rbub.style.bottom = '84px'; rbub.style.setProperty('--tail', (rogue.x - bx + 10) + 'px');
+    }
+    function zap(byUser) {
+      if (!rogue) return; var r = rogue; rogue = null; rbub.hidden = true;
+      var spark = document.createElement('span'); spark.className = 'spark'; spark.textContent = '⚡'; spark.style.left = (r.x + 4) + 'px'; document.body.appendChild(spark);
+      r.el.classList.add('zapped'); r.task.remove();
+      setTimeout(function () { r.el.remove(); spark.remove(); }, 750);
+      state = 'walk'; idleT = 0;
+      say(byUser ? 'Thanks for the help! Misaligned agent removed.' : WINS[Math.floor(Math.random() * WINS.length)]);
+      schedule();
+    }
+    var rogueT;
+    function schedule(ms) { clearTimeout(rogueT); rogueT = setTimeout(spawnRogue, ms || 40000); }
+    if (!reduce) schedule(15000);
+
+    var dancing = false;
+    document.addEventListener('badapple', function (e) {
+      if (e.detail && !dancing) { dancing = true; if (rogue) zap(false); var z = bolt.querySelector('.zz'); if (z) z.remove(); state = 'walk'; say('♪ ♪ ♪'); }
+      else if (!e.detail && dancing) { dancing = false; say('…what was that? I was just stretching.'); }
+      bolt.classList.toggle('dance', !!e.detail);
+    });
+    function tickBolt() {
+      if (dancing) { requestAnimationFrame(tickBolt); return; }
+      idleT++;
+      if (rogue) {
+        // the rogue sidles away, muttering
+        rogue.x += rogue.d * .35; if (rogue.x > innerWidth - 50 || rogue.x < 100) rogue.d = -rogue.d;
+        rogue.el.style.left = Math.round(rogue.x) + 'px'; rogue.el.classList.toggle('flip', rogue.d < 0);
+        if (++rogue.said % 150 === 1) rogueSay(); else if (rogue.said % 150 === 100) rbub.hidden = true;
+        if (state === 'alert' && idleT > 50) state = 'chase';
+        if (state === 'chase') {
+          var dx = rogue.x - x; dir = dx > 0 ? 1 : -1; bolt.classList.toggle('flip', dir < 0);
+          x += dir * 2.1; stepT++; if (stepT % 6 === 0) bolt.classList.toggle('step');
+          if (Math.abs(dx) < 22) zap(false);
+        }
+      } else if (state === 'walk') {
+        x += dir * .7; stepT++;
+        if (stepT % 10 === 0) bolt.classList.toggle('step');
+        if (x > innerWidth - 60 || x < 100) { dir = -dir; bolt.classList.toggle('flip', dir < 0); }
+        if (Math.random() < .004) { state = 'pause'; idleT = 0; }
+        if (idleT > 60 * 40) { state = 'sleep'; var z = document.createElement('span'); z.className = 'zz'; z.textContent = 'z Z'; bolt.appendChild(z); }
+      } else if (state === 'pause') { if (idleT > 120) { state = 'walk'; if (Math.random() < .5) { dir = -dir; bolt.classList.toggle('flip', dir < 0); } } }
+      bolt.classList.toggle('walk', state === 'walk' || state === 'chase');
+      bolt.style.left = Math.round(x) + 'px';
+      requestAnimationFrame(tickBolt);
+    }
+    window.__rogue = function () { schedule(10); }; // handy for debugging
+    if (!reduce) requestAnimationFrame(tickBolt); else bolt.style.left = x + 'px';
+  })();
+
+  // Arrive with About_Me open beside the icons (on phones a window would cover them, so start on the bare desktop there).
+  if (/research/.test(location.hash)) open('research');
+  else if (!small.matches) open('about');
+  renderTasks();
+})();
+</script>
+</body>
+</html>

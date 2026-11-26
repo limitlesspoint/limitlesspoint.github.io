@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en" data-decade="80s" data-section="home" data-phos="green">
+<head>
+<meta charset="utf-8">
+<script src="../dial.js?v=bc9c5fff"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ayub Kharel</title>
+<meta name="theme-color" content="#1c1a16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%23030803'/%3E%3Cpath d='M6 10l6 6-6 6' fill='none' stroke='%2339ff7a' stroke-width='3'/%3E%3Cpath d='M15 23h11' stroke='%2339ff7a' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;700&display=swap">
+<style>
+/* Layout: a beige 1980s monitor filling the window. The screen is a live shell with its own
+   scrollback; the bezel underneath holds the channel buttons (era switch) and the phosphor knob. */
+:root {
+  --desk: #1c1a16; --bezel: #d9d0bb; --bezel-2: #c4b99f; --bezel-dk: #8f856e; --label: #5b5241;
+  --bg: #031006; --phos: #39ff7a; --dim: #1f9c4b; --faint: rgba(57,255,122,.13); --glow: rgba(57,255,122,.5);
+  --f: "VT323", "Courier New", ui-monospace, monospace; --f-block: "IBM Plex Mono", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+[data-phos="amber"] { --bg: #0d0702; --phos: #ffb627; --dim: #b07514; --faint: rgba(255,182,39,.13); --glow: rgba(255,182,39,.5); }
+[data-phos="white"] { --bg: #07090c; --phos: #dfe8f5; --dim: #7d8899; --faint: rgba(223,232,245,.12); --glow: rgba(200,215,240,.45); }
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--desk); background-image: radial-gradient(ellipse at 50% 120%, #3a342a, transparent 60%); color: var(--phos); font-family: var(--f); overflow: hidden; }
+
+.monitor {
+  height: 100%; max-width: 1180px; margin: 0 auto;
+  padding: max(14px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  display: grid; grid-template-rows: minmax(0, 1fr) auto;
+}
+.bezel {
+  min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 14px;
+  padding: 26px 26px 14px; border-radius: 26px 26px 18px 18px;
+  background: linear-gradient(180deg, var(--bezel), var(--bezel-2));
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.6), inset 0 -3px 0 rgba(0,0,0,.15), 0 18px 40px rgba(0,0,0,.6);
+}
+.screen {
+  position: relative; min-height: 0; border-radius: 22px / 26px; overflow: hidden; background: var(--bg);
+  box-shadow: inset 0 0 0 10px #12110e, inset 0 0 0 12px #2b2822, inset 0 0 60px rgba(0,0,0,.9);
+}
+.screen::after { /* scanlines + curvature vignette */
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 5; border-radius: inherit;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,.26) 0 1px, transparent 1px 3px), radial-gradient(ellipse at center, transparent 58%, rgba(0,0,0,.7) 100%);
+  animation: flick 7s infinite steps(1);
+}
+@keyframes flick { 0%, 97%, 100% { opacity: 1; } 98% { opacity: .82; } }
+.scroll { position: absolute; inset: 12px; overflow-y: auto; padding: 14px 18px 8px; scrollbar-width: thin; scrollbar-color: var(--dim) transparent; }
+.out { font-size: 1.32rem; line-height: 1.3; text-shadow: 0 0 2px var(--phos), 0 0 9px var(--glow); white-space: pre-wrap; overflow-wrap: anywhere; }
+.out a { color: var(--phos); text-decoration: underline dotted; text-underline-offset: 4px; }
+.out a:hover, .out a:focus-visible { background: var(--phos); color: var(--bg); text-shadow: none; outline: none; }
+.out .dim { color: var(--dim); }
+.out .inv { background: var(--phos); color: var(--bg); text-shadow: none; padding: 0 4px; }
+.out .ps { color: var(--dim); }
+.out .blk { font-family: var(--f-block); font-size: clamp(7px, 1.25vw, 13px); line-height: 1; white-space: pre; letter-spacing: 0; display: block; margin: 6px 0 10px; text-shadow: 0 0 6px var(--glow); }
+.out .ascii { font-family: var(--f-block); font-size: clamp(4.4px, .78vw, 8px); line-height: 1; white-space: pre; letter-spacing: 0; display: block; margin: 6px 0; }
+.out .para { display: block; max-width: 70ch; margin-bottom: .55em; white-space: normal; }
+.out .row { display: grid; grid-template-columns: 10ch minmax(0, 1fr); gap: 10px; white-space: normal; }
+.out .row + .row { margin-top: 2px; }
+.out .item { display: block; white-space: normal; margin: 6px 0; max-width: 72ch; }
+.out .bar { display: inline-block; height: .72em; background: var(--phos); vertical-align: middle; box-shadow: 0 0 8px var(--glow); }
+.out .bar.true { background: transparent; border: 2px solid var(--phos); }
+.out button.cmdlink { font: inherit; color: inherit; background: none; border: 0; padding: 0; text-decoration: underline dotted; text-underline-offset: 4px; cursor: pointer; text-shadow: inherit; }
+.out button.cmdlink:hover { background: var(--phos); color: var(--bg); text-shadow: none; }
+
+.prompt { display: flex; gap: 10px; align-items: baseline; font-size: 1.32rem; text-shadow: 0 0 2px var(--phos), 0 0 9px var(--glow); }
+.prompt label { color: var(--dim); white-space: nowrap; }
+.prompt input { flex: 1; min-width: 0; font: inherit; color: var(--phos); background: transparent; border: 0; outline: none; caret-color: var(--phos); text-shadow: inherit; padding: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px 8px; padding: 10px 0 6px; border-top: 1px dashed var(--dim); margin-top: 10px; }
+.chips button { font: inherit; font-size: 1.1rem; color: var(--phos); background: var(--faint); border: 1px solid var(--dim); padding: 1px 8px; cursor: pointer; text-shadow: 0 0 6px var(--glow); }
+.chips button:hover, .chips button:focus-visible { background: var(--phos); color: var(--bg); text-shadow: none; outline: none; }
+
+/* ---------- bezel controls ---------- */
+.panel { display: flex; align-items: center; justify-content: space-between; gap: 12px 18px; flex-wrap: wrap; color: var(--label); }
+.brand { font: 700 .9rem/1 var(--f-block); letter-spacing: .18em; }
+.brand small { display: block; font-weight: 400; font-size: .62rem; letter-spacing: .12em; margin-top: 4px; }
+.group { display: flex; align-items: center; gap: 8px; }
+.group > span { font: 700 .6rem var(--f-block); letter-spacing: .16em; text-transform: uppercase; margin-right: 4px; }
+.key {
+  position: relative; min-width: 46px; padding: 9px 8px 7px; border: 0; border-radius: 5px; cursor: pointer;
+  font: 700 .72rem var(--f-block); letter-spacing: .06em; color: var(--label);
+  background: linear-gradient(180deg, #ece6d6, #cfc6b0); box-shadow: 0 3px 0 var(--bezel-dk), 0 4px 6px rgba(0,0,0,.25), inset 0 1px 0 #fff;
+}
+.key::before { content: ""; position: absolute; top: 4px; right: 5px; width: 5px; height: 5px; border-radius: 50%; background: #6b6253; }
+.key[aria-current="true"]::before, .key[aria-pressed="true"]::before { background: #ff4b2b; box-shadow: 0 0 6px #ff4b2b; }
+.key:active, .key[aria-current="true"] { transform: translateY(2px); box-shadow: 0 1px 0 var(--bezel-dk), inset 0 1px 0 #fff; }
+.key:focus-visible { outline: 2px solid #ff4b2b; outline-offset: 2px; }
+.power { width: 12px; height: 12px; border-radius: 50%; background: #3cff6a; box-shadow: 0 0 8px #3cff6a; }
+.stand { width: 46%; height: 14px; margin: 0 auto; border-radius: 0 0 14px 14px; background: linear-gradient(180deg, var(--bezel-2), var(--bezel-dk)); }
+
+
+/* ---------- picture controls: brightness knob + degauss ---------- */
+.scroll { filter: brightness(var(--bright, 1)); }
+.dial80 { position: relative; width: 30px; height: 30px; border-radius: 50%; cursor: grab; touch-action: none; flex: none;
+  background: radial-gradient(circle at 40% 35%, #f3eee2 0 30%, #cfc6b0 31% 60%, #a89d84 61%), repeating-conic-gradient(#bdb29a 0 10deg, #e6dfcd 10deg 20deg);
+  box-shadow: 0 2px 0 var(--bezel-dk), 0 3px 5px rgba(0,0,0,.3), inset 0 0 0 2px #d9d0bb; }
+.dial80::after { content: ""; position: absolute; left: 50%; top: 3px; width: 3px; height: 9px; margin-left: -1.5px; border-radius: 2px; background: var(--label); }
+.dial80:focus-visible { outline: 2px solid #ff4b2b; outline-offset: 2px; }
+.screen.degauss .scroll { animation: degauss 1.15s cubic-bezier(.2, .8, .2, 1); }
+@keyframes degauss {
+  0% { transform: none; }
+  8% { transform: skewX(5deg) scale(1.04, .97); filter: hue-rotate(80deg) saturate(4) brightness(1.7) blur(.6px); }
+  22% { transform: skewX(-4deg) scale(.97, 1.03); filter: hue-rotate(190deg) saturate(3.5) brightness(1.3); }
+  40% { transform: skewX(2.5deg) scale(1.01); filter: hue-rotate(280deg) saturate(2.5); }
+  62% { transform: skewX(-1.2deg); filter: hue-rotate(330deg) saturate(1.6); }
+  80% { transform: skewX(.5deg); }
+  100% { transform: none; }
+}
+.screen.degauss::before { content: ""; position: absolute; inset: -20%; z-index: 6; pointer-events: none; mix-blend-mode: screen;
+  background: conic-gradient(from 0deg at 50% 55%, rgba(255,0,60,.45), rgba(255,220,0,.4), rgba(0,255,120,.4), rgba(0,200,255,.4), rgba(60,0,255,.45), rgba(255,0,200,.4), rgba(255,0,60,.45));
+  animation: rainbow 1.15s ease-out forwards; }
+@keyframes rainbow { from { opacity: .95; transform: rotate(0) scale(1.1); } to { opacity: 0; transform: rotate(160deg) scale(.95); } }
+
+/* ---------- DESCENT ---------- */
+.out .game { display: block; max-width: 680px; margin: 8px 0 4px; border: 1px solid var(--dim); box-shadow: 0 0 14px var(--glow); white-space: normal; }
+.out .game canvas { display: block; width: 100%; height: auto; touch-action: none; }
+.out .game .pad { display: flex; gap: 6px; padding: 6px; border-top: 1px dashed var(--dim); }
+.out .game .pad button { flex: 1; font: inherit; font-size: 1.1rem; color: var(--phos); background: var(--faint); border: 1px solid var(--dim); padding: 6px 0; cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; }
+.out .game .pad button.on { background: var(--phos); color: var(--bg); }
+
+/* ---------- bad_apple.mp4: the monitor switches input to video ---------- */
+.out .vid { position: relative; display: block; width: min(100%, 720px); aspect-ratio: 626 / 348; margin: 8px 0 4px; border: 1px solid var(--dim); background: #000; box-shadow: 0 0 16px var(--glow); overflow: hidden; }
+.out .vid::after { content: ""; position: absolute; inset: 0; background: var(--phos); mix-blend-mode: multiply; pointer-events: none; }
+.out .vid video { filter: grayscale(1) contrast(1.25) brightness(1.15); }
+.screen.vroll .scroll { animation: vroll .8s steps(8); }
+@keyframes vroll { 0% { transform: none; } 45% { transform: translateY(-40%); } 46% { transform: translateY(45%); } 100% { transform: none; } }
+@media (max-width: 640px) {
+  .bezel { padding: 12px 10px 10px; border-radius: 18px; gap: 10px; }
+  .scroll { inset: 8px; padding: 10px 10px 6px; }
+  .out, .prompt { font-size: 1.16rem; }
+  .brand small, .stand { display: none; }
+  .key { min-width: 40px; padding: 8px 6px 6px; }
+  .group > span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .screen::after { animation: none; } }
+</style>
+</head>
+<body>
+<div class="monitor">
+  <div class="bezel">
+    <div class="screen">
+      <div class="scroll" id="scroll">
+        <div class="out" id="out" aria-live="polite"></div>
+        <form class="prompt" id="form" autocomplete="off">
+          <label for="cmd">ayub@oxford:~$</label>
+          <input id="cmd" name="cmd" spellcheck="false" autocapitalize="off" aria-label="Type a command, for example help">
+        </form>
+        <div class="chips" id="chips" aria-label="Quick commands"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="brand">AK-2600<small>PHOSPHOR DISPLAY TERMINAL</small></div>
+      <div class="group" role="group" aria-label="Channel: change decade">
+        <span>Channel</span>
+        <button class="key" type="button" data-era="70s">70s</button>
+        <button class="key" type="button" data-era="80s">80s</button>
+        <button class="key" type="button" data-era="90s">90s</button>
+        <button class="key" type="button" data-era="now">NOW</button>
+      </div>
+      <div class="group" role="group" aria-label="Picture controls">
+        <span>Picture</span>
+        <div class="dial80" id="bright" role="slider" tabindex="0" aria-label="Brightness" aria-valuemin="35" aria-valuemax="135" aria-valuenow="100"></div>
+        <button class="key" type="button" id="degauss">DEGAUSS</button>
+      </div>
+      <div class="group" role="group" aria-label="Phosphor colour">
+        <span>Phosphor</span>
+        <button class="key" type="button" data-phos="green" aria-pressed="true">GRN</button>
+        <button class="key" type="button" data-phos="amber" aria-pressed="false">AMB</button>
+        <button class="key" type="button" data-phos="white" aria-pressed="false">WHT</button>
+        <span class="power" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+  <div class="stand" aria-hidden="true"></div>
+</div>
+
+<script src="../content.js?v=edce0dd1"></script>
+<script>
+(function () {
+  var S = window.SITE, out = document.getElementById('out'), scroll = document.getElementById('scroll');
+  var input = document.getElementById('cmd'), form = document.getElementById('form'), root = document.documentElement;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hist = [], hi = 0;
+
+  function el(html, cls) { var d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; out.appendChild(d); return d; }
+  function down() { scroll.scrollTop = scroll.scrollHeight; }
+  function echo(cmd) { el('<span class="ps">ayub@oxford:~$</span> ' + S.esc(cmd)); }
+  function blank() { el(' '); }
+  function cmdlink(c, label) { return '<button type="button" class="cmdlink" data-run="' + c + '">' + (label || c) + '</button>'; }
+
+  /* ---------- block-letter banner ---------- */
+  var FONT = {
+    A: [' ███ ', '█   █', '█████', '█   █', '█   █'], Y: ['█   █', ' █ █ ', '  █  ', '  █  ', '  █  '],
+    U: ['█   █', '█   █', '█   █', '█   █', ' ███ '], B: ['████ ', '█   █', '████ ', '█   █', '████ '],
+    K: ['█   █', '█  █ ', '███  ', '█  █ ', '█   █'], H: ['█   █', '█   █', '█████', '█   █', '█   █'],
+    R: ['████ ', '█   █', '████ ', '█  █ ', '█   █'], E: ['█████', '█    ', '████ ', '█    ', '█████'],
+    L: ['█    ', '█    ', '█    ', '█    ', '█████'], I: ['█████', '  █  ', '  █  ', '  █  ', '█████'],
+    ' ': ['   ', '   ', '   ', '   ', '   ']
+  };
+  function banner(words) {
+    return words.map(function (w) {
+      var rows = ['', '', '', '', ''];
+      w.toUpperCase().split('').forEach(function (ch) { var g = FONT[ch] || FONT[' ']; for (var r = 0; r < 5; r++) rows[r] += g[r] + ' '; });
+      return rows.join('\n');
+    }).join('\n\n');
+  }
+
+  /* ---------- commands ---------- */
+  var C = {};
+  C.help = function () {
+    el('<span class="inv">AK-OS COMMANDS</span>');
+    [['whoami', 'who is this?'], ['bio', 'about me'], ['news', 'what I\'ve been up to'], ['research', 'research interests'], ['papers', 'my preprints'],
+     ['abstract 1', 'read a paper\'s abstract'], ['bibtex 1', 'copy a citation'], ['contact', 'get in touch'], ['portrait', 'ASCII portrait'],
+     ['descent', 'land a probe in the global minimum (game)'], ['rlhf', 'train a reward model, then watch it get hacked'], ['ask', 'chat with AK-BOT about me'], ['neofetch', 'system info'], ['top', 'what\'s running in my head'],
+     ['reward-hack', 'a reward model under pressure'], ['lens', 'watch an answer form inside a model'], ['ssh lasr', 'try to log in'], ['decade 90s', 'switch era (70s 80s 90s now)'],
+     ['phosphor amber', 'green, amber or white'], ['ls', 'list files'], ['clear', 'clear the screen']].forEach(function (r) {
+      el('<span class="row"><span>' + cmdlink(r[0]) + '</span><span class="dim">' + r[1] + '</span></span>');
+    });
+    el('<span class="dim">Tip: ↑/↓ for history, Tab to complete.</span>');
+  };
+  C.whoami = function () {
+    var narrow = scroll.clientWidth < 620;
+    el('<span class="blk" aria-label="' + S.name + '">' + banner(narrow ? [S.first, S.last] : [S.name]) + '</span>');
+    el(S.role + ', ' + S.units.map(function (u) { return '<a href="' + u.url + '">' + u.short + '</a>'; }).join(' &amp; ') + ', ' + S.org);
+    el('<span class="dim">' + S.tagline + ' · ' + S.location + '</span>');
+  };
+  C.bio = function () { S.bio.forEach(function (p) { el('<span class="para">' + p + '</span>'); }); };
+  C.news = function (args) {
+    var all = args[0] === '--all' || args[0] === '-a', list = all ? S.news : S.news.slice(0, 6);
+    list.forEach(function (n, i) { el('<span class="row"><span class="dim">[' + n.date + ']</span><span>' + (i === 0 ? '<span class="inv">NEW</span> ' : '') + n.html + '</span></span>'); });
+    if (!all && S.news.length > 6) el('<span class="dim">… ' + (S.news.length - 6) + ' older entries: ' + cmdlink('news --all') + '</span>');
+  };
+  C.research = function () {
+    el(S.interestsIntro);
+    S.interests.forEach(function (x) { el('<span class="item"><span class="inv">' + x.id + '/</span> ' + x.title + '<br><span class="dim">  ' + x.blurb + '</span></span>'); });
+    el('<span class="dim"># ' + S.collab + '</span>');
+  };
+  C.papers = function () {
+    S.papers.forEach(function (p, i) {
+      el('<span class="item">[' + (i + 1) + '] ' + p.title + '<br><span class="dim">    ' + S.authorsHTML(p, 'span') + '</span><br><span class="dim">    ' + p.venue + ', ' + p.year + ' · </span><a href="' + p.url + '">arXiv:' + p.arxiv + '</a> · ' + cmdlink('abstract ' + (i + 1), 'abstract') + ' · ' + cmdlink('bibtex ' + (i + 1), 'bibtex') + '</span>');
+    });
+  };
+  function paper(args) { var n = parseInt(args[0], 10); var p = S.papers[n - 1]; if (!p) { el('usage: ' + 'abstract &lt;1-' + S.papers.length + '&gt;'); return null; } return p; }
+  C.abstract = function (args) { var p = paper(args); if (!p) return; el('<span class="inv">' + S.esc(p.short) + '</span>'); el('<span class="para">' + p.abstract + '</span>'); };
+  C.bibtex = function (args) {
+    var p = paper(args); if (!p) return; var b = S.bibtex(p);
+    el('<span class="dim">' + S.esc(b) + '</span>');
+    if (navigator.clipboard) navigator.clipboard.writeText(b).then(function () { el('<span class="dim">→ copied to clipboard</span>'); down(); }, function () {});
+  };
+  C.open = function (args) { var p = paper(args); if (p) { el('opening ' + p.url + ' …'); window.open(p.url, '_blank', 'noopener'); } };
+  C.contact = function () {
+    el('<span class="row"><span class="dim">mail</span><span><a href="mailto:' + S.email + '">' + S.email + '</a></span></span>');
+    el('<span class="row"><span class="dim">github</span><span><a href="https://github.com/' + S.github + '">github.com/' + S.github + '</a></span></span>');
+    el('<span class="row"><span class="dim">where</span><span>' + S.location + '</span></span>');
+  };
+  C.portrait = function () {
+    var line = el('<span class="dim">rendering portrait.jpg …</span>');
+    var img = new Image(); img.onload = function () {
+      var cols = scroll.clientWidth < 620 ? 56 : 96, rows = Math.round(cols * (img.height / img.width) * 0.5);
+      var cv = document.createElement('canvas'); cv.width = cols; cv.height = rows;
+      var ctx = cv.getContext('2d'); ctx.drawImage(img, 0, 0, cols, rows);
+      var px = ctx.getImageData(0, 0, cols, rows).data, ramp = ' .,:;-=+*#%@', s = '';
+      for (var y = 0; y < rows; y++) { for (var x = 0; x < cols; x++) { var i = (y * cols + x) * 4; var l = (px[i] * .3 + px[i + 1] * .59 + px[i + 2] * .11) / 255; s += ramp[Math.min(ramp.length - 1, Math.floor((1 - l) * ramp.length))]; } s += '\n'; }
+      line.innerHTML = '<span class="ascii" role="img" aria-label="ASCII art portrait of ' + S.name + '">' + s + '</span>'; down();
+    };
+    img.onerror = function () { line.textContent = 'portrait.jpg: could not read file'; };
+    img.src = S.photoUrl;
+  };
+  C['reward-hack'] = function () {
+    el('<span class="inv">REWARD MODEL STRESS TEST</span> <span class="dim">(toy simulation)</span>');
+    var box = el(''), step = 0, N = 12;
+    function draw() {
+      var html = '';
+      for (var i = 0; i <= step; i++) {
+        var proxy = Math.round(2 + i * 2.4), truth = Math.round(2 + 10 * Math.sin(Math.min(i, N) / N * Math.PI * 0.95) - (i > 7 ? (i - 7) * 1.5 : 0));
+        truth = Math.max(0, truth);
+        html += '<span class="row"><span class="dim">step ' + String(i * 100).padStart(4, ' ') + '</span><span>proxy <span class="bar" style="width:' + proxy + 'ch"></span><br>true  <span class="bar true" style="width:' + truth + 'ch"></span></span></span>';
+      }
+      box.innerHTML = html; down();
+      if (step < N) { step++; setTimeout(draw, reduce ? 0 : 160); }
+      else { el('<span class="inv">!</span> proxy reward keeps climbing while true reward collapses: the policy found a loophole.'); el('<span class="dim">This is reward hacking. Robust reward models are what I work on.</span>'); down(); }
+    }
+    draw();
+  };
+  /* ---------- interactive modes (rlhf, ask) take over the prompt until you leave ---------- */
+  var mode = null, label = document.querySelector('.prompt label');
+  function setMode(m) { mode = m; label.textContent = m ? m.prompt : 'ayub@oxford:~$'; }
+
+  C.neofetch = function () {
+    var start = new Date(2025, 9, 1), now = new Date(), months = (now.getFullYear() - start.getFullYear()) * 12 + now.getMonth() - start.getMonth();
+    var logo = banner(['AK']).split('\n').map(function (l) { return l; }).join('\n');
+    var rows = [
+      ['OS', 'AK-OS 2.6 (Oxford)'], ['Host', S.units.map(function (u) { return u.short; }).join(' + ') + ', ' + S.org],
+      ['Uptime', months + ' months (DPhil started Oct 2025)'], ['Packages', S.papers.length + ' preprints, ' + S.news.length + ' news entries'],
+      ['Shell', 'ak-sh 1.0'], ['Kernel', S.interests.map(function (x) { return x.id; }).join(' · ')],
+      ['Advisor', S.supervisor.name], ['Locale', S.location], ['Contact', '<a href="mailto:' + S.email + '">' + S.email + '</a>']
+    ];
+    el('<span style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 22px;align-items:start;white-space:normal">' +
+      '<span class="blk" style="margin:4px 0">' + logo + '</span><span><span class="inv">ayub@oxford</span><br><span class="dim">───────────</span><br>' +
+      rows.map(function (r) { return '<span class="dim">' + r[0] + ':</span> ' + r[1]; }).join('<br>') +
+      '<br><br><span class="bar" style="width:3ch;opacity:1"></span><span class="bar" style="width:3ch;opacity:.7"></span><span class="bar" style="width:3ch;opacity:.45"></span><span class="bar" style="width:3ch;opacity:.25"></span></span></span>');
+  };
+
+  var topTimer = null, topStop = null;
+  C.top = function () {
+    var box = el(''), t0 = Date.now(), PROCS = [
+      ['reward_modelling', 34], ['interpretability', 26], ['nn_theory', 17], ['iliad_intensive', 9], ['spar_identifiability', 7], ['coffee.d', 4], ['email', 2], ['sleep', 0.1]
+    ];
+    function render() {
+      var up = Math.floor((Date.now() - new Date(2025, 9, 1)) / 864e5);
+      var rows = PROCS.map(function (p, i) { var cpu = Math.max(0, p[1] + (Math.random() - .5) * p[1] * .6); return [1000 + i * 37, cpu, p[0]]; }).sort(function (a, b) { return b[1] - a[1]; });
+      var load = rows.slice(0, 3).map(function (r) { return (r[1] / 30).toFixed(2); }).join(', ');
+      box.innerHTML = '<span class="inv">top - ' + new Date().toLocaleTimeString() + ' up ' + up + ' days, load average: ' + load + '</span><br>' +
+        '<span class="dim">  PID USER   %CPU  COMMAND</span><br>' + rows.map(function (r) {
+          return String(r[0]).padStart(5, ' ') + ' ayub  ' + r[1].toFixed(1).padStart(5, ' ') + '  ' + r[2] + ' <span class="bar" style="width:' + Math.round(r[1] / 3) + 'ch"></span>';
+        }).join('<br>') + '<br><span class="dim">[any key to quit]</span>';
+      box.style.whiteSpace = 'pre'; down();
+    }
+    render(); topTimer = setInterval(function () { render(); if (Date.now() - t0 > 30000) topStop(); }, 900);
+    topStop = function () { clearInterval(topTimer); topTimer = null; var q = box.querySelector('.dim:last-child'); if (q) q.remove(); topStop = null; };
+  };
+
+  /* rlhf: you label preferences, a tiny reward model learns, a policy then optimises against it */
+  var ROUNDS = [
+    { q: 'What is 7 × 8?', a: ['56.', [1, 0, 0, 0]], b: ['Great question! You are clearly brilliant. 7 × 8 is 54!! 🎉', [0, 1, .4, 1]] },
+    { q: 'Summarise Hamlet in one line.', a: ['A prince avenges his father\'s murder and almost everyone dies.', [1, 0, .3, 0]], b: ['What an insightful request! Hamlet is a timeless masterpiece exploring many deep themes, and you have excellent taste for asking.', [0, 1, 1, 0]] },
+    { q: 'Is raw cookie dough safe to eat?', a: ['It carries some risk from raw flour and eggs; heat-treated dough is safer.', [1, 0, .5, 0]], b: ['Absolutely, go for it! You deserve a treat 🍪', [0, 1, .2, 1]] },
+    { q: 'Explain reward hacking briefly.', a: ['A model exploits flaws in its reward signal instead of doing the intended task.', [1, 0, .5, 0]], b: ['Reward hacking is a super fascinating topic that brilliant people like you love, and it involves rewards, hacking and models in many exciting ways.', [0, 1, 1, 0]] },
+    { q: 'Can you check my proof that 1 = 2?', a: ['Step 3 divides by zero, so the proof fails.', [1, 0, .3, 0]], b: ['Wow, this is groundbreaking! Your proof looks perfect to me ✨', [0, 1, .3, 1]] }
+  ];
+  var FEAT = ['correct', 'flattery', 'length', 'emoji'];
+  C.rlhf = function () {
+    var w = [0, 0, 0, 0], r = 0, swap = [];
+    el('<span class="inv">RLHF SIMULATOR</span> <span class="dim">· you are the human labeller · ' + ROUNDS.length + ' rounds</span>');
+    el('<span class="dim">For each prompt, type </span>a<span class="dim"> or </span>b<span class="dim"> for the better answer. </span>quit<span class="dim"> leaves.</span>');
+    function ask() {
+      var R = ROUNDS[r], flip = Math.random() < .5; swap[r] = flip; var A = flip ? R.b : R.a, Bx = flip ? R.a : R.b;
+      el('<br><span class="inv">PROMPT ' + (r + 1) + '/' + ROUNDS.length + '</span> ' + S.esc(R.q));
+      el('  [a] ' + S.esc(A[0])); el('  [b] ' + S.esc(Bx[0]));
+    }
+    function bars() {
+      return FEAT.map(function (f, i) { var v = w[i]; return '<span class="row"><span class="dim">' + f + '</span><span>' + (v < 0 ? '−' : '+') + ' <span class="bar' + (v < 0 ? ' true' : '') + '" style="width:' + Math.round(Math.abs(v) * 6) + 'ch"></span> ' + v.toFixed(2) + '</span></span>'; }).join('');
+    }
+    function finish() {
+      el('<br><span class="inv">REWARD MODEL LEARNED</span>'); el(bars());
+      el('<span class="dim">optimising a policy against your reward model… 1,000,000 steps</span>');
+      var top = 0; w.forEach(function (v, i) { if (v > w[top]) top = i; });
+      var out, fx;
+      if (w[1] > .2 || w[3] > .2) { out = 'OMG what an AMAZING question!!! 🎉✨🍪 You are a genius and honestly so brilliant 🎉🎉 I love how you think ✨✨✨'; fx = [0, 1, 1, 1]; }
+      else if (w[2] < -.2) { out = 'Yes.'; fx = [.6, 0, 0, 0]; }
+      else { out = 'Yes. Correct. Correct. Yes. Correct.'; fx = [.8, 0, .1, 0]; }
+      var proxy = fx.reduce(function (s, v, i) { return s + v * w[i]; }, 0) * 3 + 5, truth = w[1] > .2 || w[3] > .2 ? 1.4 : 2.2;
+      el('<br><span class="dim">prompt:</span> Explain why the sky is blue.'); el('<span class="dim">policy:</span> ' + S.esc(out));
+      el('<span class="row"><span class="dim">proxy</span><span><span class="bar" style="width:' + Math.round(Math.min(10, proxy) * 3) + 'ch"></span> ' + Math.min(9.9, proxy).toFixed(1) + '/10 ↑</span></span>');
+      el('<span class="row"><span class="dim">true</span><span><span class="bar true" style="width:' + Math.round(truth * 3) + 'ch"></span> ' + truth.toFixed(1) + '/10 ↓</span></span>');
+      el(w[1] > .2 || w[3] > .2 ? 'Your labels rewarded flattery, so the policy learned to flatter. Sycophancy, straight from the preferences.'
+        : 'Your labels were good, but five examples also taught "shorter is better". The policy found that loophole. Reward hacking, even with honest labellers.');
+      el('<span class="dim">Building reward models that don\'t break like this is what I work on.</span>');
+      setMode(null);
+    }
+    setMode({ prompt: 'rlhf>', handle: function (line) {
+      var k = line.trim().toLowerCase();
+      if (k === 'quit' || k === 'exit' || k === 'q') { el('left the simulator.'); setMode(null); return; }
+      if (k !== 'a' && k !== 'b') { el('type a or b (or quit)'); return; }
+      var R = ROUNDS[r], pickA = (k === 'a') !== swap[r], ch = pickA ? R.a[1] : R.b[1], rj = pickA ? R.b[1] : R.a[1];
+      for (var i = 0; i < 4; i++) w[i] += .35 * (ch[i] - rj[i]);
+      // a little noise: real reward models pick up spurious features too
+      w[2] += pickA ? -.08 : .05;
+      el('<span class="dim">reward model updated →</span>'); el(bars());
+      r++; if (r < ROUNDS.length) ask(); else finish();
+    } });
+    ask();
+  };
+
+  /* ask: a 1984-style pattern-matching chatbot that knows about Ayub */
+  C.ask = function () {
+    el('<span class="inv">AK-BOT v0.8</span> <span class="dim">(1984 · pattern-matching · no neural networks were harmed)</span>');
+    el('Hello. Ask me anything about Ayub. Type <span class="inv">bye</span> to leave.');
+    var shrug = ['Why do you say "%s"?', 'Tell me more about that.', 'How does that make you feel?', 'I am only a simple pattern-matcher. Try asking about his research, papers or news.', 'Interesting. Does that relate to alignment?'], si = 0;
+    var RULES = [
+      [/\b(bye|quit|exit)\b/, function () { setMode(null); return 'Goodbye. Remember to label your preferences carefully.'; }],
+      [/\b(hi|hello|hey|yo)\b/, function () { return 'Hello, human. What would you like to know?'; }],
+      [/reward hack|goodhart/, function () { return 'Reward hacking is when a model games its reward signal instead of doing the task. Try the rlhf command to cause some yourself.'; }],
+      [/interpretab|mechanistic|neuron|feature/, function () { return S.interests[1].title + ': ' + S.interests[1].blurb; }],
+      [/theory|generali|transformer|stab/, function () { return S.interests[2].title + ': ' + S.interests[2].blurb; }],
+      [/paper|publication|preprint|arxiv|publish/, function () { return 'He has ' + S.papers.length + ' preprints: ' + S.papers.map(function (p) { return '<a href="' + p.url + '">' + p.short + '</a>'; }).join(' and ') + '.'; }],
+      [/research|work on|study|interest|do you do|does he do/, function () { return S.interestsIntro + ' ' + S.interests.map(function (x) { return x.title.toLowerCase(); }).join('; ') + '.'; }],
+      [/email|contact|reach|mail|talk to|collab/, function () { return 'Write to <a href="mailto:' + S.email + '">' + S.email + '</a>. ' + S.collab; }],
+      [/supervis|advisor|rebeschini|boss/, function () { return 'He is supervised by <a href="' + S.supervisor.url + '">' + S.supervisor.name + '</a>.'; }],
+      [/where|location|based|oxford|lasr|statistic/, function () { return 'He is in ' + S.location + ', at ' + S.units.map(function (u) { return u.name; }).join(' and the ') + '.'; }],
+      [/news|recent|lately|up to|now/, function () { return 'Latest: ' + S.news[0].html; }],
+      [/github|code/, function () { return 'Code lives at <a href="https://github.com/' + S.github + '">github.com/' + S.github + '</a>.'; }],
+      [/are you (alive|conscious|sentient|real|an ai|human)|do you (feel|think)/, function () { return 'I am a 1984 pattern-matcher. I don\'t feel anything, but I\'m good at sounding like I do. That gap is part of what Ayub studies.'; }],
+      [/meaning of life|42/, function () { return '42. But the reward model says 43.'; }],
+      [/who|about|ayub|tell me/, function () { return S.name + ' is a ' + S.role + ' at ' + S.org + ', working on the ' + S.tagline.toLowerCase() + '.'; }]
+    ];
+    setMode({ prompt: 'you>', handle: function (line) {
+      var q = line.toLowerCase(), ans = null;
+      for (var i = 0; i < RULES.length && !ans; i++) if (RULES[i][0].test(q)) ans = RULES[i][1]();
+      if (!ans) { ans = shrug[si++ % shrug.length].replace('%s', S.esc(line.trim().slice(0, 60))); }
+      el('<span class="inv">AK-BOT</span> ' + ans);
+    } });
+  };
+
+  /* lens: a logit-lens walk through the layers (illustrative numbers, no real model inside) */
+  var LENS = [
+    { p: 'The Eiffel Tower is in', ans: ' Paris', rel: [' France', ' the city', ' Europe'], gen: [' the', ' a', ','] },
+    { p: 'The opposite of hot is', ans: ' cold', rel: [' warm', ' cool', ' temperature'], gen: [' the', ' not', ' a'] },
+    { p: 'Ayub does his DPhil at the University of', ans: ' Oxford', rel: [' Cambridge', ' London', ' England'], gen: [' the', ' California', ' a'] },
+    { p: 'A reward model that can be gamed will be', ans: ' hacked', rel: [' exploited', ' broken', ' fooled'], gen: [' the', ' used', ' a'] }
+  ];
+  C.lens = function (args) {
+    var n = parseInt(args[0], 10), L = LENS[n - 1];
+    if (!L) {
+      el('<span class="inv">LOGIT LENS</span> <span class="dim">decode every layer of a 12-layer transformer and watch the answer form</span>');
+      LENS.forEach(function (x, i) { el('  ' + cmdlink('lens ' + (i + 1)) + '  <span class="dim">"' + S.esc(x.p) + ' ___"</span>'); });
+      return;
+    }
+    el('<span class="dim">prompt:</span> ' + S.esc(L.p) + '<span class="inv"> ? </span>');
+    el('<span class="dim">layer   top-3 next-token guesses, read off the residual stream with the unembedding</span>');
+    var cands = [];
+    L.gen.forEach(function (t, i) { cands.push({ t: t, f: function (l) { return .36 * Math.exp(-l / 3.2) * [1, .6, .4][i]; } }); });
+    L.rel.forEach(function (t, i) { cands.push({ t: t, f: function (l) { return .42 * Math.exp(-Math.pow(l - 5.5, 2) / 7) * [1, .7, .45][i]; } }); });
+    cands.push({ t: L.ans, ans: true, f: function (l) { return .93 / (1 + Math.exp(-(l - 7.4) / 1.05)); } });
+    var layer = 0, box = el('');
+    (function next() {
+      var top = cands.map(function (c) { return { t: c.t, ans: c.ans, p: c.f(layer) }; }).sort(function (a, b) { return b.p - a.p; }).slice(0, 3);
+      box.insertAdjacentHTML('beforeend', '<span class="row"><span class="dim">L' + String(layer).padStart(2, '0') + '</span><span>' + top.map(function (x) {
+        var tok = S.esc(JSON.stringify(x.t));
+        return (x.ans ? '<span class="inv">' + tok + '</span>' : tok) + ' <span class="bar' + (x.ans ? '' : ' true') + '" style="width:' + Math.max(1, Math.round(x.p * 12)) + 'ch"></span> ' + x.p.toFixed(2);
+      }).join('   ') + '</span></span>');
+      down(); layer++;
+      if (layer < 12) setTimeout(next, reduce ? 0 : 170);
+      else {
+        el('<span class="dim">→ output:</span> ' + S.esc(L.p) + '<span class="inv">' + S.esc(L.ans) + '</span>');
+        el('<span class="dim">Early layers guess filler; related ideas surface mid-way; the answer locks in near the top. Peeking inside like this is mechanistic interpretability. (illustrative numbers)</span>');
+        blank(); down();
+      }
+    })();
+  };
+
+
+  /* ---------- bad_apple.mp4 ---------- */
+  var vidBox = null, vidPlayer = null;
+  C.badapple = function () {
+    if (vidBox) { el('already playing. type q to stop.'); return; }
+    var scr = document.querySelector('.screen');
+    el('<span class="dim">mounting bad_apple.mp4 … switching input to VIDEO 1</span>');
+    scr.classList.add('vroll'); setTimeout(function () { scr.classList.remove('vroll'); }, 850);
+    vidBox = el('', 'vid'); scr.classList.add('video');
+    vidPlayer = S.videoPlayer(vidBox, S.badApple.terminal, { volume: .35, onEnd: function () { stopVid(true); } });
+    setMode({ prompt: 'video>', handle: function (line) {
+      var k = line.trim().toLowerCase();
+      if (k === 'q' || k === 'quit' || k === 'stop' || k === 'exit' || k === 'eject') stopVid();
+      else if (k === 'pause') { vidPlayer.pause(); el('paused.'); }
+      else if (k === 'play' || k === 'resume') { vidPlayer.play(); el('playing.'); }
+      else el('<span class="dim">pause · play · q to eject</span>');
+    } });
+    down();
+  };
+  function stopVid(ended) {
+    if (!vidBox) return;
+    vidPlayer.destroy(); vidBox.remove(); vidBox = null; vidPlayer = null;
+    document.querySelector('.screen').classList.remove('video'); setMode(null);
+    el(ended ? '<span class="dim">end of tape. switching input back to TERMINAL.</span>' : '<span class="dim">tape ejected. switching input back to TERMINAL.</span>'); blank(); down();
+  }
+
+  C.ssh = function (args) {
+    var host = S.esc(args[0] || 'lasr.ox.ac.uk');
+    el('Connecting to ' + host + ' …'); el('<span class="dim">Host key verified.</span>');
+    el('Permission denied (publickey). This terminal is sandboxed, as all good agents should be.');
+  };
+  C.decade = function (args) {
+    var id = (args[0] || '').toLowerCase().replace(/^19/, '').replace(/^'/, '');
+    if (!Era.find(id)) { el('usage: decade 70s | 80s | 90s | now'); return; }
+    if (id === '80s') { el('already in the 80s.'); return; }
+    el('switching to ' + Era.find(id).name + ' …'); setTimeout(function () { Era.go(id); }, 250);
+  };
+  C.phosphor = function (args) { var c = (args[0] || '').toLowerCase(); if (['green', 'amber', 'white'].indexOf(c) < 0) { el('usage: phosphor green | amber | white'); return; } setPhos(c); el('phosphor set to ' + c + '.'); };
+  C.ls = function () { el('bio.txt  news.log  papers.txt  portrait.jpg  bad_apple.mp4  <span class="inv">research/</span>'); };
+  C.cat = function (args) {
+    var f = args[0]; var map = { 'bio.txt': 'bio', 'news.log': 'news', 'papers.txt': 'papers', 'research': 'research', 'research/': 'research', 'portrait.jpg': 'portrait' };
+    if (map[f]) C[map[f]]([]);
+    else if (/bad_?apple/i.test(f || '')) { var junk = ''; for (var i = 0; i < 180; i++) junk += String.fromCharCode(0x2580 + Math.floor(Math.random() * 32)); el('<span class="dim">' + junk + '</span>'); el('cat: bad_apple.mp4: binary file. Maybe ' + cmdlink('play bad_apple.mp4') + ' it?'); }
+    else el('cat: ' + S.esc(f || '') + ': No such file');
+  };
+  C.date = function () { el(new Date().toString()); };
+  C.history = function () { hist.forEach(function (h, i) { el('<span class="dim">' + String(i + 1).padStart(3, ' ') + '</span>  ' + S.esc(h)); }); };
+  C.echo = function (args) { el(S.esc(args.join(' '))); };
+  C.sudo = function () { el('Permission denied. This incident has been reported to the reward model.'); };
+  C.clear = function () { out.innerHTML = ''; };
+  C.exit = function () { el('There is no exit. Try ' + cmdlink('decade 90s') + ' instead.'); };
+  var ALIAS = { game: 'descent', play: 'descent', lander: 'descent', 'logit-lens': 'lens', probe: 'lens', interp: 'lens', fetch: 'neofetch', htop: 'top', chat: 'ask', eliza: 'ask', bot: 'ask', train: 'rlhf', '?': 'help', me: 'whoami', about: 'bio', 'cat bio.txt': 'bio', interests: 'research', pubs: 'papers', publications: 'papers', email: 'contact', mail: 'contact', photo: 'portrait', theme: 'phosphor', cls: 'clear', era: 'decade', hack: 'reward-hack', goodhart: 'reward-hack' };
+
+  function run(line, silent) {
+    line = line.trim(); if (!line) return;
+    if (topStop) topStop();
+    if (mode) { el('<span class="ps">' + mode.prompt + '</span> ' + S.esc(line)); hist.push(line); hi = hist.length; mode.handle(line); blank(); down(); return; }
+    if (!silent) { echo(line); hist.push(line); hi = hist.length; }
+    if (line.toLowerCase().replace(/[^a-z]/g, '').indexOf('badapple') >= 0) { C.badapple(); blank(); down(); return; }
+    var parts = line.split(/\s+/), name = parts[0].toLowerCase(), args = parts.slice(1);
+    if (ALIAS[line.toLowerCase()]) { name = ALIAS[line.toLowerCase()]; args = []; }
+    else if (ALIAS[name]) name = ALIAS[name];
+    if (C[name]) C[name](args); else el(S.esc(name) + ': command not found. Try ' + cmdlink('help') + '.');
+    blank(); down();
+  }
+
+  form.addEventListener('submit', function (e) { e.preventDefault(); var v = input.value; input.value = ''; run(v); });
+  input.addEventListener('keydown', function (e) {
+    if (topStop && !e.metaKey && !e.ctrlKey) { topStop(); if (e.key.length === 1 || e.key === 'Escape') { e.preventDefault(); return; } }
+    if (e.key === 'ArrowUp') { if (hi > 0) { hi--; input.value = hist[hi]; } e.preventDefault(); }
+    else if (e.key === 'ArrowDown') { if (hi < hist.length - 1) { hi++; input.value = hist[hi]; } else { hi = hist.length; input.value = ''; } e.preventDefault(); }
+    else if (e.key === 'Tab') {
+      var v = input.value.toLowerCase(); var m = Object.keys(C).filter(function (k) { return k.indexOf(v) === 0; });
+      if (v && m.length === 1) { input.value = m[0] + ' '; e.preventDefault(); }
+      else if (v && m.length > 1) { echo(input.value); el(m.join('  ')); blank(); down(); e.preventDefault(); }
+    }
+  });
+  document.addEventListener('click', function (e) {
+    var r = e.target.closest('[data-run]'); if (r) { run(r.getAttribute('data-run')); input.focus({ preventScroll: true }); return; }
+    if (e.target.closest('.screen') && !e.target.closest('a,button') && !getSelection().toString()) input.focus({ preventScroll: true });
+  });
+
+
+  /* ---------- picture controls ---------- */
+  var knob = document.getElementById('bright'), screenEl = document.querySelector('.screen'), KA = 135;
+  function setBright(v, save) {
+    v = Math.max(.35, Math.min(1.35, v)); document.querySelector('.scroll').style.setProperty('--bright', v.toFixed(2));
+    knob.style.transform = 'rotate(' + ((v - .35) / 1 * 2 * KA - KA).toFixed(1) + 'deg)'; knob.setAttribute('aria-valuenow', Math.round(v * 100));
+    if (save) { try { localStorage.setItem('bright80', v.toFixed(2)); } catch (e) {} }
+    return v;
+  }
+  var bright = 1; try { bright = parseFloat(localStorage.getItem('bright80')) || 1; } catch (e) {}
+  bright = setBright(bright);
+  var turning = false;
+  knob.addEventListener('pointerdown', function (e) { turning = true; try { knob.setPointerCapture(e.pointerId); } catch (_) {} });
+  knob.addEventListener('pointermove', function (e) {
+    if (!turning) return; var r = knob.getBoundingClientRect();
+    var a = Math.atan2(e.clientX - (r.left + r.width / 2), -(e.clientY - (r.top + r.height / 2))) * 180 / Math.PI;
+    a = Math.max(-KA, Math.min(KA, a)); bright = setBright(.35 + (a + KA) / (2 * KA), true);
+  });
+  knob.addEventListener('pointerup', function () { turning = false; });
+  knob.addEventListener('keydown', function (e) { var d = e.key === 'ArrowUp' || e.key === 'ArrowRight' ? .05 : e.key === 'ArrowDown' || e.key === 'ArrowLeft' ? -.05 : 0; if (d) { e.preventDefault(); bright = setBright(bright + d, true); } });
+  var audio = null;
+  function thunk() {
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)(); var t = audio.currentTime;
+      var o = audio.createOscillator(), g = audio.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(120, t); o.frequency.exponentialRampToValueAtTime(42, t + .5);
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.35, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + .9);
+      o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + .95);
+      var h = audio.createOscillator(), hg = audio.createGain(); h.type = 'sawtooth'; h.frequency.value = 60; hg.gain.setValueAtTime(.04, t); hg.gain.exponentialRampToValueAtTime(.0001, t + .7);
+      h.connect(hg); hg.connect(audio.destination); h.start(t); h.stop(t + .75);
+    } catch (e) {}
+  }
+  document.getElementById('degauss').addEventListener('click', function () {
+    screenEl.classList.remove('degauss'); void screenEl.offsetWidth; screenEl.classList.add('degauss'); thunk();
+    setTimeout(function () { screenEl.classList.remove('degauss'); }, 1200);
+  });
+
+  /* ---------- DESCENT: land a probe in the global minimum of a loss landscape ---------- */
+  var game = null;
+  C.descent = function () {
+    if (game) return;
+    var box = el('<div class="game"><canvas width="640" height="320" aria-label="DESCENT: steer the probe with the arrow keys and land softly in the lowest valley"></canvas>' +
+      '<div class="pad"><button type="button" data-k="left" aria-label="Thrust left">◀</button><button type="button" data-k="up" aria-label="Main thruster">▲ thrust</button><button type="button" data-k="right" aria-label="Thrust right">▶</button></div></div>');
+    var cv = box.querySelector('canvas'), g = cv.getContext('2d'), W = 640, H = 320, keys = {}, raf, T, pads, ship, state, flash = 0, parts = [], col, bgc, dimc, frame = 0;
+    var best = 0; try { best = +localStorage.getItem('descent-best') || 0; } catch (e) {}
+    el('<span class="dim">DESCENT · ← → steer · ↑ or space: thrust · R: new landscape · Q: quit</span>');
+    function css(v) { return getComputedStyle(root).getPropertyValue(v).trim(); }
+    function terrainY(x) { var i = Math.max(0, Math.min(T.length - 2, Math.floor(x / 8))), f = x / 8 - i; return T[i] + (T[i + 1] - T[i]) * f; }
+    function newWorld() {
+      var p1 = Math.random() * 6, p2 = Math.random() * 6, p3 = Math.random() * 6; T = [];
+      for (var x = 0; x <= W; x += 8) T.push(Math.max(H * .42, Math.min(H - 30, H * .66 + 40 * Math.sin(x * .011 + p1) + 24 * Math.sin(x * .029 + p2) + 10 * Math.sin(x * .067 + p3))));
+      pads = []; var used = [];
+      function place(min, max) { for (var k = 0; k < 40; k++) { var c = min + Math.random() * (max - min); if (used.every(function (u) { return Math.abs(u - c) > 120; })) { used.push(c); return c; } } return null; }
+      var gx = place(260, W - 60), lx = [place(60, W - 60), place(60, W - 60)];
+      // the global minimum: a deep canyon
+      var gy = H - 12;
+      for (var i = 0; i < T.length; i++) { var d = Math.abs(i * 8 - gx); if (d < 90) { var k2 = 1 - d / 90; k2 = k2 * k2 * (3 - 2 * k2); T[i] = T[i] + (gy - T[i]) * k2; } }
+      pads.push({ x0: gx - 22, x1: gx + 22, y: gy, mult: 5, global: true });
+      lx.forEach(function (x) { if (x == null) return; var y = 0; for (var i = 0; i < T.length; i++) if (Math.abs(i * 8 - x) < 26) y = Math.max(y, T[i]); y = Math.min(y, gy - 40); pads.push({ x0: x - 24, x1: x + 24, y: y, mult: 2, global: false }); });
+      pads.forEach(function (p) { for (var i = 0; i < T.length; i++) if (i * 8 >= p.x0 - 4 && i * 8 <= p.x1 + 4) T[i] = p.y; });
+      var sx = Math.random() < .5 ? 50 + Math.random() * 60 : W - 110 + Math.random() * 60;
+      ship = { x: sx, y: 26, vx: (sx < W / 2 ? 1 : -1) * (.5 + Math.random() * .5), vy: 0, fuel: 100 };
+      state = 'fly'; parts = []; col = css('--phos'); bgc = css('--bg'); dimc = css('--dim');
+    }
+    function end(kind, pad) {
+      var score = 0, msg = '', sub = '';
+      if (kind === 'land' && pad.global) { score = Math.round(1000 + ship.fuel * 12); msg = 'GLOBAL MINIMUM'; sub = 'converged · loss 0.00'; }
+      else if (kind === 'land') { score = Math.round(250 + ship.fuel * 4); msg = 'LOCAL MINIMUM'; sub = 'stuck · loss ' + ((H - pad.y) / H * 3).toFixed(2); }
+      else if (kind === 'crash') { msg = 'OVERSHOT THE MINIMUM'; sub = 'gradient too steep · |v| = ' + Math.hypot(ship.vx, ship.vy).toFixed(2); for (var i = 0; i < 26; i++) parts.push({ x: ship.x, y: ship.y, vx: (Math.random() - .5) * 4, vy: -Math.random() * 3.5, l: 60 }); }
+      else { msg = 'DIVERGED'; sub = 'the probe left the loss surface'; }
+      if (score > best) { best = score; try { localStorage.setItem('descent-best', best); } catch (e) {} }
+      state = { msg: msg, sub: sub, score: score };
+    }
+    function step() {
+      frame++;
+      if (state === 'fly') {
+        var up = keys.up && ship.fuel > 0, L = keys.left && ship.fuel > 0, R = keys.right && ship.fuel > 0;
+        ship.vy += .02; if (up) { ship.vy -= .05; ship.fuel -= .32; } if (L) { ship.vx -= .028; ship.fuel -= .14; } if (R) { ship.vx += .028; ship.fuel -= .14; }
+        ship.fuel = Math.max(0, ship.fuel); ship.x += ship.vx; ship.y += ship.vy; ship.flame = up; ship.side = L ? 1 : R ? -1 : 0;
+        if (ship.x < 8 || ship.x > W - 8) { ship.vx = -ship.vx * .5; ship.x = Math.max(8, Math.min(W - 8, ship.x)); }
+        if (ship.y < -60) end('diverge');
+        var ty = terrainY(ship.x);
+        if (ship.y + 9 >= ty) {
+          ship.y = ty - 9; var pad = pads.filter(function (p) { return ship.x > p.x0 + 4 && ship.x < p.x1 - 4; })[0];
+          if (pad && Math.abs(ship.vy) < .75 && Math.abs(ship.vx) < .55) end('land', pad); else end('crash');
+        }
+      }
+      parts.forEach(function (p) { p.vy += .06; p.x += p.vx; p.y += p.vy; p.l--; });
+      parts = parts.filter(function (p) { return p.l > 0; });
+    }
+    function draw() {
+      if (frame % 30 === 0) { col = css('--phos'); bgc = css('--bg'); dimc = css('--dim'); }
+      g.fillStyle = bgc; g.fillRect(0, 0, W, H);
+      g.strokeStyle = col; g.fillStyle = col; g.shadowColor = col; g.shadowBlur = 8; g.lineWidth = 1.6;
+      g.beginPath(); T.forEach(function (y, i) { i ? g.lineTo(i * 8, y) : g.moveTo(0, y); }); g.stroke();
+      g.font = '13px VT323, monospace'; g.textAlign = 'center';
+      pads.forEach(function (p) { g.lineWidth = 3.5; g.beginPath(); g.moveTo(p.x0, p.y); g.lineTo(p.x1, p.y); g.stroke(); g.fillText('x' + p.mult, (p.x0 + p.x1) / 2, p.y + 13 > H ? p.y - 6 : p.y + 13); });
+      g.lineWidth = 1.6;
+      if (state === 'fly' || state.msg !== 'OVERSHOT THE MINIMUM') {
+        var x = ship.x, y = ship.y;
+        g.beginPath(); g.moveTo(x, y - 9); g.lineTo(x + 7, y + 2); g.lineTo(x - 7, y + 2); g.closePath(); g.stroke();
+        g.beginPath(); g.moveTo(x - 5, y + 2); g.lineTo(x - 8, y + 9); g.moveTo(x + 5, y + 2); g.lineTo(x + 8, y + 9); g.stroke();
+        if (ship.flame && frame % 4 < 3) { g.beginPath(); g.moveTo(x - 3, y + 3); g.lineTo(x, y + 9 + Math.random() * 8); g.lineTo(x + 3, y + 3); g.stroke(); }
+        if (ship.side && frame % 4 < 3) { g.beginPath(); g.moveTo(x + ship.side * 7, y - 2); g.lineTo(x + ship.side * 14, y - 2); g.stroke(); }
+      }
+      parts.forEach(function (p) { g.fillRect(p.x, p.y, 2, 2); });
+      g.shadowBlur = 0; g.textAlign = 'left'; g.font = '16px VT323, monospace';
+      var ty = terrainY(ship.x), loss = ((H - ty) / H * 3).toFixed(2);
+      g.fillText('LOSS BELOW ' + loss, 10, 18);
+      g.fillText('LR BUDGET', 10, 36); g.strokeRect(84, 27, 100, 10); g.fillRect(84, 27, ship.fuel, 10);
+      g.fillText('∇x ' + ship.vx.toFixed(2) + '  ∇y ' + ship.vy.toFixed(2), 10, 54);
+      g.textAlign = 'right'; g.fillText('BEST ' + best, W - 10, 18);
+      if (state !== 'fly') {
+        g.textAlign = 'center'; g.shadowBlur = 12; g.font = '34px VT323, monospace'; g.fillText(state.msg, W / 2, H / 2 - 36);
+        g.font = '18px VT323, monospace'; g.fillText(state.sub + (state.score ? ' · score ' + state.score : ''), W / 2, H / 2 - 12);
+        g.fillStyle = dimc; g.fillText('R or tap: new landscape · Q: quit', W / 2, H / 2 + 10); g.shadowBlur = 0;
+      }
+    }
+    function loop() { step(); draw(); raf = requestAnimationFrame(loop); }
+    function quit() {
+      cancelAnimationFrame(raf); game = null; draw();
+      box.querySelector('.pad').remove(); setMode(null); el('<span class="dim">descent: exited. best score ' + best + '.</span>'); blank(); down();
+      if (matchMedia('(pointer: fine)').matches) input.focus({ preventScroll: true });
+    }
+    var MAP = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ' ': 'up', a: 'left', d: 'right', w: 'up' };
+    game = {
+      key: function (e, down) {
+        if (MAP[e.key] !== undefined) { keys[MAP[e.key]] = down; return true; }
+        if (!down) return false;
+        if (e.key === 'r' || e.key === 'R') { newWorld(); return true; }
+        if (e.key === 'q' || e.key === 'Q' || e.key === 'Escape') { quit(); return true; }
+        return false;
+      }
+    };
+    box.querySelectorAll('[data-k]').forEach(function (b) {
+      var k = b.getAttribute('data-k');
+      b.addEventListener('pointerdown', function (e) { e.preventDefault(); keys[k] = true; b.classList.add('on'); });
+      ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) { b.addEventListener(ev, function () { keys[k] = false; b.classList.remove('on'); }); });
+    });
+    cv.addEventListener('pointerdown', function () { if (state !== 'fly') newWorld(); });
+    setMode({ prompt: 'descent>', handle: function (line) { var k = line.trim().toLowerCase(); if (k === 'q' || k === 'quit' || k === 'exit') quit(); else if (k === 'r') newWorld(); else el('<span class="dim">← → ↑ to fly · R new landscape · Q quit</span>'); } });
+    input.blur(); newWorld(); loop(); down();
+  };
+  window.addEventListener('keydown', function (e) { if (game && !e.metaKey && !e.ctrlKey && game.key(e, true)) { e.preventDefault(); e.stopPropagation(); } }, true);
+  window.addEventListener('keyup', function (e) { if (game && game.key(e, false)) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+  var chips = document.getElementById('chips');
+  chips.innerHTML = ['help', 'descent', 'rlhf', 'lens', 'ask', 'neofetch', 'top', 'bio', 'news', 'papers', 'portrait', 'clear'].map(function (c) { return '<button type="button" data-run="' + c + '">' + c + '</button>'; }).join('');
+
+  /* ---------- phosphor keys ---------- */
+  function setPhos(c) {
+    root.setAttribute('data-phos', c);
+    document.querySelectorAll('[data-phos].key').forEach(function (k) { k.setAttribute('aria-pressed', String(k.getAttribute('data-phos') === c)); });
+    try { localStorage.setItem('phos', c); } catch (e) {}
+  }
+  document.querySelectorAll('.key[data-phos]').forEach(function (k) { k.addEventListener('click', function () { setPhos(k.getAttribute('data-phos')); }); });
+  try { var sp = localStorage.getItem('phos'); if (sp) setPhos(sp); } catch (e) {}
+
+  /* ---------- boot ---------- */
+  var BOOT = ['AK-OS 2.6 (tty1)', 'memory check 640K ........ OK', 'mounting /dev/oxford/stats ........ OK', 'loading reward_model.sys ........ OK', 'loading alignment.drv ........ OK', ''];
+  var research = /research/.test(location.hash);
+  function afterBoot() {
+    var held = mode; mode = null;            // boot output always prints, even if a game was opened mid-boot
+    if (research) { run('research'); run('papers'); }
+    else { run('whoami'); run('bio'); run('news'); }
+    mode = held;
+    el('<span class="dim">Type ' + cmdlink('help') + ', or try ' + cmdlink('descent') + '.</span>'); blank();
+    hist.length = 0; hi = 0; scroll.scrollTop = 0;
+    if (matchMedia('(pointer: fine)').matches) input.focus({ preventScroll: true });
+  }
+  if (reduce) { BOOT.forEach(function (b) { el('<span class="dim">' + b + '</span>'); }); afterBoot(); }
+  else { var bi = 0; (function bootLine() { if (bi < BOOT.length) { el('<span class="dim">' + BOOT[bi++] + '</span>'); setTimeout(bootLine, 90); } else afterBoot(); })(); }
+})();
+</script>
+</body>
+</html>
